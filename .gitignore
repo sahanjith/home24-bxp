@@ -3,3 +3,5 @@ dist
 .env
 .vite
 *.log
+yarn.lock
+pnpm-lock.yaml
