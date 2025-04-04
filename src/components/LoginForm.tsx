@@ -1,11 +1,14 @@
 import { Button, Form, Input, message } from 'antd';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import type { LoginFormValues } from '@/types';
 import { API_BASE_URL } from '@/utils/api';
 import { handleError } from '@/utils/handleError';
 
 export default function LoginForm() {
+  const navigate = useNavigate();
+
   const [loginError, setLoginError] = useState<boolean>(false);
 
   const onFinish = async (values: LoginFormValues) => {
@@ -25,6 +28,7 @@ export default function LoginForm() {
       const data = await response.json();
       localStorage.setItem('token', data.token);
       message.success('Logged in successfully!');
+      navigate('/product-list');
     } catch (error) {
       setLoginError(true);
       handleError(error);
