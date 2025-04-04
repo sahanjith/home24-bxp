@@ -19,7 +19,8 @@ export default function LoginForm() {
       }
 
       const data = await response.json();
-      message.success(`Logged in! Token: ${data.token}`);
+      localStorage.setItem('token', data.token);
+      message.success('Logged in successfully!');
     } catch (error) {
       handleError(error);
     }
