@@ -1,8 +1,31 @@
-import { Button, Form, Input } from 'antd';
+import { Button, Form, Input, message } from 'antd';
+
+import type { LoginFormValues } from '@/types';
+import { handleError } from '@/utils/handleError';
 
 export default function LoginForm() {
+  const onFinish = async (values: LoginFormValues) => {
+    try {
+      const response = await fetch('/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(values),
+      });
+
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.message || 'Login failed');
+      }
+
+      const data = await response.json();
+      message.success(`Logged in! Token: ${data.token}`);
+    } catch (error) {
+      handleError(error);
+    }
+  };
+
   return (
-    <Form name="login" layout="vertical" onFinish={() => {}} className="w-full">
+    <Form name="login" layout="vertical" onFinish={onFinish} className="w-full">
       <Form.Item
         label="Username"
         name="username"
