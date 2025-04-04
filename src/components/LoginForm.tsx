@@ -1,11 +1,15 @@
 import { Button, Form, Input, message } from 'antd';
+import { useState } from 'react';
 
 import type { LoginFormValues } from '@/types';
 import { API_BASE_URL } from '@/utils/api';
 import { handleError } from '@/utils/handleError';
 
 export default function LoginForm() {
+  const [loginError, setLoginError] = useState<boolean>(false);
+
   const onFinish = async (values: LoginFormValues) => {
+    setLoginError(false);
     try {
       const response = await fetch(`${API_BASE_URL}/login`, {
         method: 'POST',
@@ -22,6 +26,7 @@ export default function LoginForm() {
       localStorage.setItem('token', data.token);
       message.success('Logged in successfully!');
     } catch (error) {
+      setLoginError(true);
       handleError(error);
     }
   };
@@ -47,6 +52,11 @@ export default function LoginForm() {
       >
         <Input.Password placeholder="Password" size="large" />
       </Form.Item>
+      {loginError && (
+        <div className="text-red-500 text-sm mb-6 text-center">
+          Invalid credentials, please try again or contact system administrator.
+        </div>
+      )}
       <Form.Item className="mt-8 mb-0">
         <Button
           type="primary"
