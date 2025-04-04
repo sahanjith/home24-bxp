@@ -1,12 +1,13 @@
 import { Button, Form, Input, message } from 'antd';
 
 import type { LoginFormValues } from '@/types';
+import { API_BASE_URL } from '@/utils/api';
 import { handleError } from '@/utils/handleError';
 
 export default function LoginForm() {
   const onFinish = async (values: LoginFormValues) => {
     try {
-      const response = await fetch('/api/login', {
+      const response = await fetch(`${API_BASE_URL}/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(values),
