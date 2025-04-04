@@ -1,12 +1,5 @@
-import { Button } from 'antd';
+import LoginPage from '@/pages/LoginPage';
 
-function App() {
-  return (
-    <div>
-      <h1 className="bg-red-500">Tailwind</h1>
-      <Button type="primary">AntD</Button>
-    </div>
-  );
+export default function App() {
+  return <LoginPage />;
 }
-
-export default App;
