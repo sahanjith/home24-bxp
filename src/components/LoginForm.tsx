@@ -6,7 +6,10 @@ export default function LoginForm() {
       <Form.Item
         label="Username"
         name="username"
-        rules={[{ required: true, message: 'Please enter your username' }]}
+        rules={[
+          { required: true, message: 'Please enter your username' },
+          { type: 'email', message: 'Please enter a valid email address' },
+        ]}
         className="mb-8"
       >
         <Input placeholder="Username" size="large" />
