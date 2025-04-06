@@ -4,7 +4,11 @@ import { useEffect, useState } from 'react';
 import { mapCategoriesToTreeData } from '@/helpers/productCategoryTree';
 import { handleError } from '@/utils/handleError';
 
-const ProductCategoryTree = () => {
+interface ProductCategoryTreeProps {
+  onCategorySelect: (categoryKey: number) => void;
+}
+
+const ProductCategoryTree = ({ onCategorySelect }: ProductCategoryTreeProps) => {
   const [treeData, setTreeData] = useState<TreeDataNode[]>([]);
   const [expandedKeys, setExpandedKeys] = useState<React.Key[]>([]);
   const [searchValue, setSearchValue] = useState('');
@@ -57,6 +61,18 @@ const ProductCategoryTree = () => {
     return Array.from(keys);
   };
 
+  const handleSelect = (
+    selectedKeys: React.Key[],
+    info: {
+      selected: boolean;
+      node: TreeDataNode;
+    },
+  ) => {
+    if (selectedKeys.length > 0 && !info.node.children) {
+      onCategorySelect(selectedKeys[0] as number);
+    }
+  };
+
   return (
     <div className="p-2">
       <Input.Search
@@ -86,6 +102,7 @@ const ProductCategoryTree = () => {
           );
         }}
         data-testid="product-category-tree"
+        onSelect={(selectedKeys, info) => handleSelect(selectedKeys, info)}
       />
     </div>
   );
