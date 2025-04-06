@@ -10,7 +10,7 @@
     "lint": "eslint . --ext .js,.ts,.jsx,.tsx",
     "format": "prettier --write .",
     "preview": "vite preview",
-    "test": "jest",
+    "test": "jest --coverage",
     "test:watch": "jest --watch"
   },
   "engines": {
