@@ -1,6 +1,7 @@
-import { List, Select, Modal, Button } from 'antd';
+import { List, Select } from 'antd';
 import { useEffect, useRef, useState } from 'react';
 
+import ProductModal from '@/components/ProductModal';
 import { Product } from '@/types';
 import { handleError } from '@/utils/handleError';
 
@@ -166,41 +167,12 @@ const ProductList: React.FC<ProductListProps> = ({ selectedCategory }) => {
           />
         )}
       </div>
-      <Modal
-        title="Edit Product"
-        open={isModalVisible}
-        onCancel={() => setIsModalVisible(false)}
-        footer={[
-          <Button key="cancel" onClick={() => setIsModalVisible(false)}>
-            Close
-          </Button>,
-          <Button key="save" type="primary" onClick={() => console.log('Save clicked')}>
-            Save
-          </Button>,
-        ]}
-      >
-        {selectedProduct ? (
-          <div className="space-y-2">
-            <p>
-              <strong>Name:</strong> {selectedProduct.name}
-            </p>
-            <p>
-              <strong>SKU:</strong> {selectedProduct.attributes?.sku}
-            </p>
-            <p>
-              <strong>Description:</strong> {selectedProduct.attributes?.description}
-            </p>
-            <p>
-              <strong>Available:</strong> {selectedProduct.attributes?.available ? 'Yes' : 'No'}
-            </p>
-            <p>
-              <strong>Colors:</strong> {selectedProduct.attributes?.colors?.join(', ')}
-            </p>
-          </div>
-        ) : (
-          <p>Loading product data...</p>
-        )}
-      </Modal>
+      <ProductModal
+        visible={isModalVisible}
+        onClose={() => setIsModalVisible(false)}
+        product={selectedProduct}
+        onSave={() => {}}
+      />
     </>
   );
 };
