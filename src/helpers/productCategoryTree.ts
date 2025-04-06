@@ -13,10 +13,10 @@ interface CategoryResponse {
 export function mapCategoriesToTreeData(categories: CategoryResponse[]): TreeDataNode[] {
   return categories.map((category) => ({
     title: category.name,
-    key: `category-${category.id}`,
+    key: `${category.id}`,
     children: category.subcategories.map((sub) => ({
       title: sub.name,
-      key: `subcategory-${sub.id}`,
+      key: `${sub.id}`,
       isLeaf: true,
     })),
   }));

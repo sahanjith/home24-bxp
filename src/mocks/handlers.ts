@@ -32,4 +32,21 @@ export const handlers = [
 
     return res(ctx.status(200), ctx.json(categories));
   }),
+  rest.get('/api/products/:categoryId', (req, res, ctx) => {
+    const categoryId = Number(req.params.categoryId);
+    const filteredProducts = products.flatMap((category) =>
+      category.subCategories.flatMap((subCategory) =>
+        subCategory.products
+          .filter((product) => product.categoryId === categoryId)
+          .map((product) => ({
+            id: product.id,
+            name: product.name,
+            categoryId: product.categoryId,
+            attributes: product.attributes,
+          })),
+      ),
+    );
+
+    return res(ctx.status(200), ctx.json(filteredProducts));
+  }),
 ];

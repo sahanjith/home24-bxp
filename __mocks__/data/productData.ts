@@ -8,30 +8,18 @@ export const products = [
         parentId: 100001,
         subCategory: 'Sofas',
         products: [
-          {
-            id: 300001,
-            name: 'Leather Sofa',
+          ...Array.from({ length: 60 }, (_, i) => ({
+            id: 300001 + i,
+            name: `Leather Sofa ${i + 1}`,
             categoryId: 200001,
             attributes: {
-              sku: 501001,
-              url: 'https://example.com/products/leather-sofa',
-              available: true,
-              description: 'A premium leather sofa with modern design.',
+              sku: 501001 + i,
+              url: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7',
+              available: i % 2 === 0,
+              description: `A premium leather sofa model ${i + 1}.`,
               colors: ['Black', 'Brown', 'Beige'],
             },
-          },
-          {
-            id: 300002,
-            name: 'Fabric Sofa',
-            categoryId: 200001,
-            attributes: {
-              sku: 501002,
-              url: 'https://example.com/products/fabric-sofa',
-              available: false,
-              description: 'Comfortable and stylish fabric sofa.',
-              colors: ['Gray', 'Blue', 'Cream'],
-            },
-          },
+          })),
         ],
       },
       {
@@ -45,7 +33,7 @@ export const products = [
             categoryId: 200002,
             attributes: {
               sku: 501003,
-              url: 'https://example.com/products/dining-table',
+              url: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7',
               available: true,
               description: 'Solid wood dining table for 6 people.',
               colors: ['Walnut', 'Oak'],
@@ -57,7 +45,7 @@ export const products = [
             categoryId: 200002,
             attributes: {
               sku: 501004,
-              url: 'https://example.com/products/coffee-table',
+              url: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7',
               available: true,
               description: 'Compact coffee table with storage shelf.',
               colors: ['Black', 'White'],
@@ -82,7 +70,7 @@ export const products = [
             categoryId: 200003,
             attributes: {
               sku: 501005,
-              url: 'https://example.com/products/patio-set',
+              url: 'https://images.unsplash.com/photo-1556912999-54f5f6f6f6f6',
               available: true,
               description: 'Durable patio set with chairs and table.',
               colors: ['Gray', 'White'],
@@ -94,7 +82,7 @@ export const products = [
             categoryId: 200003,
             attributes: {
               sku: 501006,
-              url: 'https://example.com/products/hammock',
+              url: 'https://images.unsplash.com/photo-1556912999-54f5f6f6f6f6',
               available: false,
               description: 'Relaxing hammock for your garden retreat.',
               colors: ['Green', 'Beige'],
@@ -113,7 +101,7 @@ export const products = [
             categoryId: 200004,
             attributes: {
               sku: 501007,
-              url: 'https://example.com/products/rake',
+              url: 'https://images.unsplash.com/photo-1556912999-54f5f6f6f6f6',
               available: true,
               description: 'Sturdy garden rake with ergonomic handle.',
               colors: ['Red', 'Green'],
@@ -125,7 +113,7 @@ export const products = [
             categoryId: 200004,
             attributes: {
               sku: 501008,
-              url: 'https://example.com/products/shovel',
+              url: 'https://images.unsplash.com/photo-1556912999-54f5f6f6f6f6',
               available: true,
               description: 'Steel shovel for heavy-duty digging.',
               colors: ['Black', 'Silver'],
@@ -150,7 +138,7 @@ export const products = [
             categoryId: 200005,
             attributes: {
               sku: 501009,
-              url: 'https://example.com/products/vase',
+              url: 'https://images.unsplash.com/photo-1524758631624-e2822e304c36',
               available: true,
               description: 'Elegant ceramic vase for any decor.',
               colors: ['White', 'Blue', 'Gold'],
@@ -162,7 +150,7 @@ export const products = [
             categoryId: 200005,
             attributes: {
               sku: 501010,
-              url: 'https://example.com/products/wall-art',
+              url: 'https://images.unsplash.com/photo-1524758631624-e2822e304c36',
               available: false,
               description: 'Modern canvas wall art for living spaces.',
               colors: ['Multicolor'],
@@ -181,7 +169,7 @@ export const products = [
             categoryId: 200006,
             attributes: {
               sku: 501011,
-              url: 'https://example.com/products/baskets',
+              url: 'https://images.unsplash.com/photo-1524758631624-e2822e304c36',
               available: true,
               description: 'Handwoven storage baskets for organization.',
               colors: ['Natural', 'White'],
@@ -193,7 +181,7 @@ export const products = [
             categoryId: 200006,
             attributes: {
               sku: 501012,
-              url: 'https://example.com/products/boxes',
+              url: 'https://images.unsplash.com/photo-1524758631624-e2822e304c36',
               available: true,
               description: 'Set of decorative storage boxes.',
               colors: ['Brown', 'Gray'],
@@ -218,7 +206,7 @@ export const products = [
             categoryId: 200007,
             attributes: {
               sku: 501013,
-              url: 'https://example.com/products/chandelier',
+              url: 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85',
               available: true,
               description: 'Crystal chandelier for a luxurious look.',
               colors: ['Gold', 'Clear'],
@@ -230,7 +218,7 @@ export const products = [
             categoryId: 200007,
             attributes: {
               sku: 501014,
-              url: 'https://example.com/products/pendant-light',
+              url: 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85',
               available: false,
               description: 'Minimalist pendant light for modern homes.',
               colors: ['Black', 'White'],
@@ -249,7 +237,7 @@ export const products = [
             categoryId: 200008,
             attributes: {
               sku: 501015,
-              url: 'https://example.com/products/desk-lamp',
+              url: 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85',
               available: true,
               description: 'Adjustable LED desk lamp with USB charging.',
               colors: ['Black', 'Silver'],
@@ -261,7 +249,7 @@ export const products = [
             categoryId: 200008,
             attributes: {
               sku: 501016,
-              url: 'https://example.com/products/bedside-lamp',
+              url: 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85',
               available: true,
               description: 'Soft glow bedside lamp with touch control.',
               colors: ['White', 'Wood'],
@@ -286,7 +274,7 @@ export const products = [
             categoryId: 200009,
             attributes: {
               sku: 501017,
-              url: 'https://example.com/products/frying-pan',
+              url: 'https://images.unsplash.com/photo-1603394532903-284c5fcd93d2',
               available: true,
               description: 'Non-stick frying pan with ergonomic handle.',
               colors: ['Black', 'Red'],
@@ -298,7 +286,7 @@ export const products = [
             categoryId: 200009,
             attributes: {
               sku: 501018,
-              url: 'https://example.com/products/saucepan',
+              url: 'https://images.unsplash.com/photo-1603394532903-284c5fcd93d2',
               available: false,
               description: 'Stainless steel saucepan with glass lid.',
               colors: ['Silver'],
@@ -317,7 +305,7 @@ export const products = [
             categoryId: 200010,
             attributes: {
               sku: 501019,
-              url: 'https://example.com/products/spatula',
+              url: 'https://images.unsplash.com/photo-1603394532903-284c5fcd93d2',
               available: true,
               description: 'Heat-resistant silicone spatula.',
               colors: ['Green', 'Orange'],
@@ -329,7 +317,7 @@ export const products = [
             categoryId: 200010,
             attributes: {
               sku: 501020,
-              url: 'https://example.com/products/whisk',
+              url: 'https://images.unsplash.com/photo-1603394532903-284c5fcd93d2',
               available: true,
               description: 'Stainless steel balloon whisk.',
               colors: ['Silver'],
@@ -354,7 +342,7 @@ export const products = [
             categoryId: 200011,
             attributes: {
               sku: 501021,
-              url: 'https://example.com/products/queen-bed',
+              url: 'https://images.unsplash.com/photo-1601979031925-3ccdebb6d6d3',
               available: true,
               description: 'Spacious queen-size bed with headboard.',
               colors: ['Gray', 'White'],
@@ -366,7 +354,7 @@ export const products = [
             categoryId: 200011,
             attributes: {
               sku: 501022,
-              url: 'https://example.com/products/bunk-bed',
+              url: 'https://images.unsplash.com/photo-1601979031925-3ccdebb6d6d3',
               available: false,
               description: 'Wooden bunk bed with safety rails.',
               colors: ['Natural', 'White'],
@@ -385,7 +373,7 @@ export const products = [
             categoryId: 200012,
             attributes: {
               sku: 501023,
-              url: 'https://example.com/products/2door-wardrobe',
+              url: 'https://images.unsplash.com/photo-1601979031925-3ccdebb6d6d3',
               available: true,
               description: 'Spacious 2-door wardrobe with mirror.',
               colors: ['Walnut', 'Oak'],
@@ -397,7 +385,7 @@ export const products = [
             categoryId: 200012,
             attributes: {
               sku: 501024,
-              url: 'https://example.com/products/sliding-wardrobe',
+              url: 'https://images.unsplash.com/photo-1601979031925-3ccdebb6d6d3',
               available: true,
               description: 'Modern sliding wardrobe with soft-close doors.',
               colors: ['Black', 'White'],
