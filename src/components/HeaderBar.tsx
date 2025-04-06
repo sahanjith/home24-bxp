@@ -9,7 +9,7 @@ const HeaderBar = () => {
 
   const handleLogout = () => {
     localStorage.clear();
-    navigate('/');
+    navigate('/login');
   };
 
   const menu = (
