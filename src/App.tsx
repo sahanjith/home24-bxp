@@ -1,12 +1,18 @@
-import { Button } from 'antd';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
-function App() {
+import LoginPage from '@/pages/LoginPage';
+import ProductListPage from '@/pages/ProductListPage';
+import ProtectedRoute from '@/routes/ProtectedRoute';
+
+export default function App() {
   return (
-    <div>
-      <h1 className="bg-red-500">Tailwind</h1>
-      <Button type="primary">AntD</Button>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<LoginPage />} />
+        <Route element={<ProtectedRoute />}>
+          <Route path="/product-list" element={<ProductListPage />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   );
 }
-
-export default App;

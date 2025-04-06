@@ -1,10 +1,14 @@
 {
-    "extends": "./tsconfig.json",
-    "compilerOptions": {
-      "jsx": "react-jsx",
-      "module": "CommonJS",
-      "esModuleInterop": true,
-      "isolatedModules": false
-    },
-    "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.test.ts", "src/**/*.test.tsx"]
-  }
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "target": "ESNext",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "isolatedModules": false,
+    "types": ["vite/client", "node"]
+  },
+  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.test.ts", "src/**/*.test.tsx"]
+}
