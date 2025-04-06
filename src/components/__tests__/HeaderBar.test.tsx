@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 
 import HeaderBar from '../HeaderBar';
@@ -25,7 +25,7 @@ describe('HeaderBar', () => {
     expect(screen.getByTestId('user-avatar')).toBeInTheDocument();
   });
 
-  it('upon clicking logout option user logs out and navigates to login page', () => {
+  it('upon clicking logout option user logs out and navigates to login page', async () => {
     setup();
 
     const dropdownTrigger = screen.getByTestId('user-avatar');
@@ -34,6 +34,8 @@ describe('HeaderBar', () => {
     const logoutItem = screen.getByText('Logout');
     fireEvent.click(logoutItem);
 
-    expect(localStorage.length).toBe(0);
+    await waitFor(() => {
+      expect(localStorage.length).toBe(0);
+    });
   });
 });
