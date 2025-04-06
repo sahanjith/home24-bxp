@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import type { LoginFormValues } from '@/types';
-import { API_BASE_URL } from '@/utils/api';
+import { getApiBaseUrl } from '@/utils/api';
 import { handleError } from '@/utils/handleError';
 
 export default function LoginForm() {
@@ -14,7 +14,7 @@ export default function LoginForm() {
   const onFinish = async (values: LoginFormValues) => {
     setLoginError(false);
     try {
-      const response = await fetch(`${API_BASE_URL}/login`, {
+      const response = await fetch(`${getApiBaseUrl()}/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(values),
@@ -36,7 +36,13 @@ export default function LoginForm() {
   };
 
   return (
-    <Form name="login" layout="vertical" onFinish={onFinish} className="w-full">
+    <Form
+      name="login"
+      layout="vertical"
+      onFinish={onFinish}
+      className="w-full"
+      data-testid="login-form"
+    >
       <Form.Item
         label="Username"
         name="username"
@@ -46,7 +52,7 @@ export default function LoginForm() {
         ]}
         className="mb-8"
       >
-        <Input placeholder="Username" size="large" />
+        <Input placeholder="Username" size="large" data-testid="username-input" />
       </Form.Item>
       <Form.Item
         label="Password"
@@ -54,10 +60,10 @@ export default function LoginForm() {
         rules={[{ required: true, message: 'Please enter your password' }]}
         className="mb-8"
       >
-        <Input.Password placeholder="Password" size="large" />
+        <Input.Password placeholder="Password" size="large" data-testid="password-input" />
       </Form.Item>
       {loginError && (
-        <div className="text-red-500 text-sm mb-6 text-center">
+        <div className="text-red-500 text-sm mb-6 text-center" data-testid="login-error">
           Invalid credentials, please try again or contact system administrator.
         </div>
       )}
@@ -68,6 +74,7 @@ export default function LoginForm() {
           block
           size="large"
           className="!bg-blue-500 hover:!bg-blue-600 !text-white"
+          data-testid="login-button"
         >
           Log In
         </Button>

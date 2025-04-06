@@ -1,13 +1,26 @@
-const baseUrl = import.meta.env.VITE_API_BASE_URL;
+let baseUrl: string | undefined;
 
-if (!baseUrl) {
-  if (import.meta.env.PROD) {
-    throw new Error('Missing required environment variable: VITE_API_BASE_URL');
-  } else {
-    console.warn(
-      'VITE_API_BASE_URL is not defined. Falling back to "/api". Make sure VITE_API_BASE_URL is set in your .env file.',
-    );
+export function getApiBaseUrl(): string {
+  if (typeof process !== 'undefined' && process.env.NODE_ENV === 'test') {
+    return process.env.VITE_API_BASE_URL || 'http://localhost:5173/api';
   }
-}
 
-export const API_BASE_URL = baseUrl || '/api';
+  if (!baseUrl) {
+    try {
+      // Dynamically importing Vite-specific config in browser
+      // This won't be executed during tests, otherwise it would give typescript errors
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
+      const viteEnv = require('./env.vite');
+      baseUrl = viteEnv.viteApiBaseUrl || '/api';
+
+      if (!viteEnv.viteApiBaseUrl && viteEnv.isProd) {
+        throw new Error('Missing VITE_API_BASE_URL');
+      }
+    } catch {
+      // fallback for any unknown env
+      baseUrl = '/api';
+    }
+  }
+
+  return baseUrl || '/api';
+}
