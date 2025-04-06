@@ -7,10 +7,12 @@ import { customAntTheme } from './theme/antdTheme';
 import 'antd/dist/reset.css'; // AntD v5+ uses reset.css, this is required to placed before tailwind
 import './index.css';
 
-// initialzing the MSW for develeopment environment
-if (import.meta.env.DEV) {
+// initialzing the MSW for dev and prod environments
+if (typeof window !== 'undefined') {
   import('./mocks/browser').then(({ worker }) => {
-    worker.start();
+    worker.start({
+      onUnhandledRequest: 'bypass',
+    });
   });
 }
 
