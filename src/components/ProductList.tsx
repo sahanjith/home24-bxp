@@ -56,7 +56,7 @@ const ProductList: React.FC<ProductListProps> = ({ selectedCategory }) => {
     listRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
   }, [pageSize]);
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <div>Select a category to view products</div>;
 
   return (
     <div
