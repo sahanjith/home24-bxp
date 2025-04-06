@@ -1,5 +1,5 @@
 import { List, Select } from 'antd';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { Product } from '@/types';
 import { handleError } from '@/utils/handleError';
@@ -13,6 +13,8 @@ const ProductList: React.FC<ProductListProps> = ({ selectedCategory }) => {
   const [loading, setLoading] = useState(true);
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
   const [sortField, setSortField] = useState<'name' | 'sku'>('name');
+  const [pageSize, setPageSize] = useState(5);
+  const listRef = useRef<HTMLDivElement>(null);
 
   const sortProducts = (items: Product[]) => {
     const getField = (product: Product) => {
@@ -50,10 +52,17 @@ const ProductList: React.FC<ProductListProps> = ({ selectedCategory }) => {
     setProducts((prev) => sortProducts(prev));
   }, [sortOrder, sortField]);
 
+  useEffect(() => {
+    listRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [pageSize]);
+
   if (loading) return <div>Loading...</div>;
 
   return (
-    <div className="bg-white p-6 rounded shadow">
+    <div
+      ref={listRef}
+      className="bg-white p-6 rounded shadow overflow-y-auto max-h-[calc(100vh-100px)]"
+    >
       <h2 className="text-xl font-semibold mb-4 text-gray-800">Product List</h2>
       <div className="flex justify-end gap-4 mb-4">
         <div>
@@ -86,6 +95,23 @@ const ProductList: React.FC<ProductListProps> = ({ selectedCategory }) => {
             ]}
           />
         </div>
+        <div>
+          <label htmlFor="pageSize" className="mr-2 text-gray-700 self-center">
+            Items per page:
+          </label>
+          <Select
+            id="pageSize"
+            value={pageSize}
+            onChange={(value) => setPageSize(value)}
+            className="w-36"
+            options={[
+              { label: '5', value: 5 },
+              { label: '10', value: 10 },
+              { label: '20', value: 20 },
+              { label: '50', value: 50 },
+            ]}
+          />
+        </div>
       </div>
       {products.length === 0 ? (
         <div className="text-gray-500 text-center">No products found.</div>
@@ -93,6 +119,7 @@ const ProductList: React.FC<ProductListProps> = ({ selectedCategory }) => {
         <List
           itemLayout="horizontal"
           dataSource={products}
+          pagination={{ pageSize }}
           renderItem={(product) => (
             <List.Item
               className="hover:bg-gray-50 px-4 py-3 rounded transition"
@@ -106,7 +133,6 @@ const ProductList: React.FC<ProductListProps> = ({ selectedCategory }) => {
                 </button>,
               ]}
             >
-              {' '}
               <List.Item.Meta
                 avatar={
                   <img

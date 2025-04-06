@@ -8,30 +8,18 @@ export const products = [
         parentId: 100001,
         subCategory: 'Sofas',
         products: [
-          {
-            id: 300001,
-            name: 'Leather Sofa',
+          ...Array.from({ length: 60 }, (_, i) => ({
+            id: 300001 + i,
+            name: `Leather Sofa ${i + 1}`,
             categoryId: 200001,
             attributes: {
-              sku: 501001,
-              url: 'https://example.com/products/leather-sofa',
-              available: true,
-              description: 'A premium leather sofa with modern design.',
+              sku: 501001 + i,
+              url: `https://example.com/products/leather-sofa-${i + 1}`,
+              available: i % 2 === 0,
+              description: `A premium leather sofa model ${i + 1}.`,
               colors: ['Black', 'Brown', 'Beige'],
             },
-          },
-          {
-            id: 300002,
-            name: 'Fabric Sofa',
-            categoryId: 200001,
-            attributes: {
-              sku: 501002,
-              url: 'https://example.com/products/fabric-sofa',
-              available: false,
-              description: 'Comfortable and stylish fabric sofa.',
-              colors: ['Gray', 'Blue', 'Cream'],
-            },
-          },
+          })),
         ],
       },
       {
