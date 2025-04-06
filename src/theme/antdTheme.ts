@@ -1,5 +1,5 @@
 import { ThemeConfig } from 'antd';
-import colors from 'tailwindcss/colors';
+import * as colors from 'tailwindcss/colors';
 
 export const customAntTheme: ThemeConfig = {
   token: {
