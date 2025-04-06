@@ -1,4 +1,4 @@
-import { List, Select } from 'antd';
+import { List, Select, Modal, Button } from 'antd';
 import { useEffect, useRef, useState } from 'react';
 
 import { Product } from '@/types';
@@ -9,6 +9,8 @@ interface ProductListProps {
 }
 
 const ProductList: React.FC<ProductListProps> = ({ selectedCategory }) => {
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
@@ -27,6 +29,18 @@ const ProductList: React.FC<ProductListProps> = ({ selectedCategory }) => {
       const fieldB = String(getField(b)).toLowerCase();
       return sortOrder === 'asc' ? fieldA.localeCompare(fieldB) : fieldB.localeCompare(fieldA);
     });
+  };
+
+  const handleEdit = async (productId: number) => {
+    try {
+      const res = await fetch(`/api/product/${productId}`);
+      if (!res.ok) throw new Error('Failed to fetch product');
+      const product = await res.json();
+      setSelectedProduct(product);
+      setIsModalVisible(true);
+    } catch (error) {
+      handleError(error);
+    }
   };
 
   useEffect(() => {
@@ -59,98 +73,135 @@ const ProductList: React.FC<ProductListProps> = ({ selectedCategory }) => {
   if (loading) return <div>Select a category to view products</div>;
 
   return (
-    <div
-      ref={listRef}
-      className="bg-white p-6 rounded shadow overflow-y-auto max-h-[calc(100vh-100px)]"
-    >
-      <h2 className="text-xl font-semibold mb-4 text-gray-800">Product List</h2>
-      <div className="flex justify-end gap-4 mb-4">
-        <div>
-          <label htmlFor="sortField" className="mr-2 text-gray-700 self-center">
-            Field:
-          </label>
-          <Select
-            id="sortField"
-            value={sortField}
-            onChange={(value) => setSortField(value)}
-            className="w-36"
-            options={[
-              { label: 'Name', value: 'name' },
-              { label: 'SKU', value: 'sku' },
-            ]}
-          />
-        </div>
-        <div>
-          <label htmlFor="sortOrder" className="mr-2 text-gray-700 self-center">
-            Order:
-          </label>
-          <Select
-            id="sortOrder"
-            value={sortOrder}
-            onChange={(value) => setSortOrder(value)}
-            className="w-36"
-            options={[
-              { label: 'Ascending', value: 'asc' },
-              { label: 'Descending', value: 'desc' },
-            ]}
-          />
-        </div>
-        <div>
-          <label htmlFor="pageSize" className="mr-2 text-gray-700 self-center">
-            Items per page:
-          </label>
-          <Select
-            id="pageSize"
-            value={pageSize}
-            onChange={(value) => setPageSize(value)}
-            className="w-36"
-            options={[
-              { label: '5', value: 5 },
-              { label: '10', value: 10 },
-              { label: '20', value: 20 },
-              { label: '50', value: 50 },
-            ]}
-          />
-        </div>
-      </div>
-      {products.length === 0 ? (
-        <div className="text-gray-500 text-center">No products found.</div>
-      ) : (
-        <List
-          itemLayout="horizontal"
-          dataSource={products}
-          pagination={{ pageSize }}
-          renderItem={(product) => (
-            <List.Item
-              className="hover:bg-gray-50 px-4 py-3 rounded transition"
-              actions={[
-                <button
-                  key="edit"
-                  className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded transition"
-                  onClick={() => console.log('Edit clicked for', product.id)}
-                >
-                  Edit
-                </button>,
+    <>
+      <div
+        ref={listRef}
+        className="bg-white p-6 rounded shadow overflow-y-auto max-h-[calc(100vh-100px)]"
+      >
+        <h2 className="text-xl font-semibold mb-4 text-gray-800">Product List</h2>
+        <div className="flex justify-end gap-4 mb-4">
+          <div>
+            <label htmlFor="sortField" className="mr-2 text-gray-700 self-center">
+              Field:
+            </label>
+            <Select
+              id="sortField"
+              value={sortField}
+              onChange={(value) => setSortField(value)}
+              className="w-36"
+              options={[
+                { label: 'Name', value: 'name' },
+                { label: 'SKU', value: 'sku' },
               ]}
-            >
-              <List.Item.Meta
-                avatar={
-                  <img
-                    src={product.attributes?.url || 'https://via.placeholder.com/64'}
-                    alt={`Image of ${product.name}`}
-                    className="w-16 h-16 object-cover rounded"
-                  />
-                }
-                title={<span className="text-gray-800 font-medium">{product.name}</span>}
-                description={
-                  <span className="text-gray-500 text-sm">{product.attributes?.sku}</span>
-                }
-              />
-            </List.Item>
-          )}
-        />
-      )}
-    </div>
+            />
+          </div>
+          <div>
+            <label htmlFor="sortOrder" className="mr-2 text-gray-700 self-center">
+              Order:
+            </label>
+            <Select
+              id="sortOrder"
+              value={sortOrder}
+              onChange={(value) => setSortOrder(value)}
+              className="w-36"
+              options={[
+                { label: 'Ascending', value: 'asc' },
+                { label: 'Descending', value: 'desc' },
+              ]}
+            />
+          </div>
+          <div>
+            <label htmlFor="pageSize" className="mr-2 text-gray-700 self-center">
+              Items per page:
+            </label>
+            <Select
+              id="pageSize"
+              value={pageSize}
+              onChange={(value) => setPageSize(value)}
+              className="w-36"
+              options={[
+                { label: '5', value: 5 },
+                { label: '10', value: 10 },
+                { label: '20', value: 20 },
+                { label: '50', value: 50 },
+              ]}
+            />
+          </div>
+        </div>
+        {products.length === 0 ? (
+          <div className="text-gray-500 text-center">No products found.</div>
+        ) : (
+          <List
+            itemLayout="horizontal"
+            dataSource={products}
+            pagination={{ pageSize }}
+            renderItem={(product) => (
+              <List.Item
+                className="hover:bg-gray-50 px-4 py-3 rounded transition"
+                actions={[
+                  <button
+                    key="edit"
+                    className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded transition"
+                    onClick={() => handleEdit(product.id)}
+                  >
+                    Edit
+                  </button>,
+                ]}
+              >
+                <List.Item.Meta
+                  avatar={
+                    <img
+                      src={product.attributes?.url || 'https://via.placeholder.com/64'}
+                      alt={`Image of ${product.name}`}
+                      className="w-16 h-16 object-cover rounded"
+                    />
+                  }
+                  title={<span className="text-gray-800 font-medium">{product.name}</span>}
+                  description={
+                    <span className="text-gray-500 text-sm">{product.attributes?.sku}</span>
+                  }
+                />
+              </List.Item>
+            )}
+          />
+        )}
+      </div>
+      <Modal
+        title="Edit Product"
+        open={isModalVisible}
+        onCancel={() => setIsModalVisible(false)}
+        footer={[
+          <Button key="cancel" onClick={() => setIsModalVisible(false)}>
+            Close
+          </Button>,
+          <Button key="save" type="primary" onClick={() => console.log('Save clicked')}>
+            Save
+          </Button>,
+        ]}
+      >
+        {selectedProduct ? (
+          <div className="space-y-2">
+            <p>
+              <strong>Name:</strong> {selectedProduct.name}
+            </p>
+            <p>
+              <strong>SKU:</strong> {selectedProduct.attributes?.sku}
+            </p>
+            <p>
+              <strong>Description:</strong> {selectedProduct.attributes?.description}
+            </p>
+            <p>
+              <strong>Available:</strong> {selectedProduct.attributes?.available ? 'Yes' : 'No'}
+            </p>
+            <p>
+              <strong>Colors:</strong> {selectedProduct.attributes?.colors?.join(', ')}
+            </p>
+          </div>
+        ) : (
+          <p>Loading product data...</p>
+        )}
+      </Modal>
+    </>
   );
 };
 

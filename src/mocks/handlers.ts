@@ -49,4 +49,16 @@ export const handlers = [
 
     return res(ctx.status(200), ctx.json(filteredProducts));
   }),
+  rest.get('/api/product/:productId', (req, res, ctx) => {
+    const productId = Number(req.params.productId);
+    const product = products
+      .flatMap((category) => category.subCategories.flatMap((subCategory) => subCategory.products))
+      .find((product) => product.id === productId);
+
+    if (product) {
+      return res(ctx.status(200), ctx.json(product));
+    } else {
+      return res(ctx.status(404), ctx.json({ message: 'Product not found' }));
+    }
+  }),
 ];
