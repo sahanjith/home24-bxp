@@ -69,6 +69,7 @@ const ProductCategoryTree = () => {
             setExpandedKeys(['root', ...getExpandedKeysForSearch(treeData, value)]);
           }
         }}
+        data-testid="search-category-input"
       />
       <Tree
         treeData={treeData}
@@ -76,11 +77,15 @@ const ProductCategoryTree = () => {
         onExpand={(keys) => setExpandedKeys(keys)}
         className="bg-white"
         showLine={{ showLeafIcon: false }}
-        filterAntTreeNode={(node) =>
-          searchValue
-            ? node.title?.toString().toLowerCase().includes(searchValue.toLowerCase())
-            : false
-        }
+        filterAntTreeNode={(node) => {
+          const title = (node as unknown as TreeDataNode).title;
+          return (
+            !!searchValue &&
+            !!title &&
+            title.toString().toLowerCase().includes(searchValue.toLowerCase())
+          );
+        }}
+        data-testid="product-category-tree"
       />
     </div>
   );
