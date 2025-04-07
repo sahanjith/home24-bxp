@@ -33,6 +33,13 @@ You can access the production environment here:
 
 ---
 
+## 🧠 Development Overview (Miro Board)
+
+Take a look at how the development has progressed so far — journey, decisions, and progress on a Miro board.  
+👉 [View the Miro Board](https://miro.com/app/board/uXjVIJw9yrQ=/?share_link_id=561567844429)
+
+---
+
 ## 🕵️ Demo Credentials
 
 Use the following **top secret** credentials to log in to the production app:
