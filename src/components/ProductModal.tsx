@@ -2,6 +2,7 @@ import { Modal, Input, Switch, Select, Form } from 'antd';
 import { useEffect } from 'react';
 
 import { Product } from '@/types';
+import { handleError } from '@/utils/handleError';
 
 const { TextArea } = Input;
 
@@ -28,6 +29,28 @@ const ProductModal: React.FC<ProductModalProps> = ({ visible, onClose, product, 
     }
   }, [product, form]);
 
+  const updateProduct = async (updatedProduct: Product) => {
+    try {
+      const response = await fetch(`/api/product/${updatedProduct.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(updatedProduct),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to update product');
+      }
+
+      const result = await response.json();
+      console.log('Product updated:', result);
+
+      onSave(updatedProduct);
+      onClose();
+    } catch (error) {
+      handleError(error);
+    }
+  };
+
   const handleFinish = (values: {
     name: string;
     sku: number;
@@ -49,7 +72,7 @@ const ProductModal: React.FC<ProductModalProps> = ({ visible, onClose, product, 
           colors: values.colors,
         },
       };
-      onSave(updatedProduct);
+      updateProduct(updatedProduct);
     }
   };
 
@@ -60,7 +83,22 @@ const ProductModal: React.FC<ProductModalProps> = ({ visible, onClose, product, 
       onCancel={onClose}
       cancelText="Close"
       className="w-full max-w-5xl"
-      footer={null}
+      footer={[
+        <button
+          key="cancel"
+          onClick={onClose}
+          className="bg-gray-300 hover:bg-gray-400 text-black font-semibold py-2 px-4 rounded"
+        >
+          Cancel
+        </button>,
+        <button
+          key="submit"
+          onClick={() => form.submit()}
+          className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded ml-2"
+        >
+          Save
+        </button>,
+      ]}
     >
       {product && (
         <div className="space-y-4">

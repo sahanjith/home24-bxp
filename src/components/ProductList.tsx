@@ -171,7 +171,12 @@ const ProductList: React.FC<ProductListProps> = ({ selectedCategory }) => {
         visible={isModalVisible}
         onClose={() => setIsModalVisible(false)}
         product={selectedProduct}
-        onSave={() => {}}
+        onSave={(updatedProduct) => {
+          setIsModalVisible(false);
+          setProducts((prevProducts) =>
+            prevProducts.map((p) => (p.id === updatedProduct.id ? updatedProduct : p)),
+          );
+        }}
       />
     </>
   );
