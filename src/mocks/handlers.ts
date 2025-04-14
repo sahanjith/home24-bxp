@@ -61,4 +61,33 @@ export const handlers = [
       return res(ctx.status(404), ctx.json({ message: 'Product not found' }));
     }
   }),
+  rest.put('/api/product/:productId', async (req, res, ctx) => {
+    const productId = Number(req.params.productId);
+    const updatedData = await req.json();
+
+    let foundProduct = null;
+
+    products.forEach((category) => {
+      category.subCategories.forEach((subCategory) => {
+        const productIndex = subCategory.products.findIndex((p) => p.id === productId);
+        if (productIndex !== -1) {
+          subCategory.products[productIndex] = {
+            ...subCategory.products[productIndex],
+            ...updatedData,
+            attributes: {
+              ...subCategory.products[productIndex].attributes,
+              ...updatedData.attributes,
+            },
+          };
+          foundProduct = subCategory.products[productIndex];
+        }
+      });
+    });
+
+    if (foundProduct) {
+      return res(ctx.status(200), ctx.json({ message: 'Product updated successfully' }));
+    } else {
+      return res(ctx.status(404), ctx.json({ message: 'Product not found' }));
+    }
+  }),
 ];
