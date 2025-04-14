@@ -1,4 +1,4 @@
-import { Modal, Input, Switch, Select, Form } from 'antd';
+import { Modal, Input, Switch, Select, Form, App } from 'antd';
 import { useEffect } from 'react';
 
 import { Product } from '@/types';
@@ -15,6 +15,7 @@ interface ProductModalProps {
 
 const ProductModal: React.FC<ProductModalProps> = ({ visible, onClose, product, onSave }) => {
   const [form] = Form.useForm();
+  const { message } = App.useApp();
 
   useEffect(() => {
     if (product) {
@@ -45,7 +46,13 @@ const ProductModal: React.FC<ProductModalProps> = ({ visible, onClose, product, 
       console.log('Product updated:', result);
 
       onSave(updatedProduct);
-      onClose();
+      message.success('Product saved successfully');
+      onSave(updatedProduct);
+
+      // Slight delay before closing to allow toast to show
+      setTimeout(() => {
+        onClose();
+      }, 300);
     } catch (error) {
       handleError(error);
     }
