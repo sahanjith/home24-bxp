@@ -42,17 +42,9 @@ const ProductModal: React.FC<ProductModalProps> = ({ visible, onClose, product, 
         throw new Error('Failed to update product');
       }
 
-      const result = await response.json();
-      console.log('Product updated:', result);
-
       onSave(updatedProduct);
       message.success('Product saved successfully');
-      onSave(updatedProduct);
-
-      // Slight delay before closing to allow toast to show
-      setTimeout(() => {
-        onClose();
-      }, 300);
+      onClose();
     } catch (error) {
       handleError(error);
     }
@@ -99,6 +91,7 @@ const ProductModal: React.FC<ProductModalProps> = ({ visible, onClose, product, 
           Cancel
         </button>,
         <button
+          data-testid="product-save-button"
           key="submit"
           onClick={() => form.submit()}
           className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded ml-2"
@@ -121,7 +114,7 @@ const ProductModal: React.FC<ProductModalProps> = ({ visible, onClose, product, 
                 label="Name"
                 rules={[{ required: true, message: 'Please enter product name' }]}
               >
-                <Input />
+                <Input data-testid="product-name" />
               </Form.Item>
 
               <Form.Item
@@ -129,11 +122,11 @@ const ProductModal: React.FC<ProductModalProps> = ({ visible, onClose, product, 
                 label="SKU"
                 rules={[{ required: true, message: 'Please enter SKU' }]}
               >
-                <Input />
+                <Input data-testid="product-sku" />
               </Form.Item>
 
               <Form.Item name="available" label="Available" valuePropName="checked">
-                <Switch />
+                <Switch data-testid="product-available" />
               </Form.Item>
             </div>
             <div className="flex justify-center items-start mt-4 sm:mt-0">
@@ -141,6 +134,7 @@ const ProductModal: React.FC<ProductModalProps> = ({ visible, onClose, product, 
                 src={product?.attributes?.url}
                 alt={product.name}
                 className="w-full max-w-xs rounded shadow-md"
+                data-testid="product-image"
               />
             </div>
             <Form.Item
@@ -149,11 +143,11 @@ const ProductModal: React.FC<ProductModalProps> = ({ visible, onClose, product, 
               className="col-span-2"
               rules={[{ required: true, message: 'Please enter image URL' }]}
             >
-              <Input />
+              <Input data-testid="product-image-url" />
             </Form.Item>
 
             <Form.Item name="colors" label="Colors" className="col-span-2">
-              <Select mode="multiple" placeholder="Select colors">
+              <Select mode="multiple" placeholder="Select colors" data-testid="product-colors">
                 {[
                   'Black',
                   'White',
@@ -178,7 +172,7 @@ const ProductModal: React.FC<ProductModalProps> = ({ visible, onClose, product, 
               className="col-span-2"
               rules={[{ required: true, message: 'Please enter description' }]}
             >
-              <TextArea rows={3} />
+              <TextArea rows={3} data-testid="product-description" />
             </Form.Item>
           </Form>
         </div>
