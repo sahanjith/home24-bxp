@@ -7,9 +7,10 @@ import { handleError } from '@/utils/handleError';
 
 interface ProductListProps {
   selectedCategory: number | null;
+  onUpdateLastModified: (product: Product | null) => void;
 }
 
-const ProductList: React.FC<ProductListProps> = ({ selectedCategory }) => {
+const ProductList: React.FC<ProductListProps> = ({ selectedCategory, onUpdateLastModified }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [products, setProducts] = useState<Product[]>([]);
@@ -176,6 +177,7 @@ const ProductList: React.FC<ProductListProps> = ({ selectedCategory }) => {
           setProducts((prevProducts) =>
             prevProducts.map((p) => (p.id === updatedProduct.id ? updatedProduct : p)),
           );
+          onUpdateLastModified(updatedProduct);
         }}
       />
     </>
