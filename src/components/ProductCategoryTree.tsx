@@ -20,17 +20,26 @@ const ProductCategoryTree = ({ onCategorySelect }: ProductCategoryTreeProps) => 
         const data = await res.json();
         const children = mapCategoriesToTreeData(data);
 
-        setTreeData([
+        const tree = [
           {
             title: 'All Products',
             key: 'root',
             children,
           },
-        ]);
+        ];
 
-        // setting the first child as expanded by default
+        setTreeData(tree);
+
         if (children.length > 0) {
-          setExpandedKeys(['root', children[0].key]);
+          const firstCategory = children[0];
+          const firstNodeKey = firstCategory.children?.[0]?.key;
+
+          setExpandedKeys(['root', firstCategory.key]);
+
+          // select the first child node (first product) to list products on user's intial visit/page refresh
+          if (firstNodeKey !== undefined) {
+            onCategorySelect(firstNodeKey as number);
+          }
         } else {
           setExpandedKeys(['root']);
         }
