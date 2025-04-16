@@ -3,14 +3,13 @@ import { useState } from 'react';
 
 import HeaderBar from '@/components/HeaderBar';
 import ProductCategoryTree from '@/components/ProductCategoryTree';
-import ProductList from '@/components/ProductList';
+import ProductForm from '@/components/ProductForm';
 import { Product } from '@/types';
 
 const { Header, Content } = Layout;
 
-const ProductListPage = () => {
-  const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+const ProductPage = () => {
+  const [, setSelectedCategory] = useState<number | null>(null);
   const [lastModifiedProduct, setLastModifiedProduct] = useState<Product | null>(null);
 
   return (
@@ -29,7 +28,11 @@ const ProductListPage = () => {
 
           {/* Main content */}
           <Content className="bg-gray-100 p-4 w-full h-full overflow-y-auto">
-            <ProductList selectedCategory={selectedCategory} />
+            <ProductForm
+              onSave={(product) => {
+                setLastModifiedProduct(product);
+              }}
+            />
           </Content>
         </Layout>
       </Layout>
@@ -37,4 +40,4 @@ const ProductListPage = () => {
   );
 };
 
-export default ProductListPage;
+export default ProductPage;
