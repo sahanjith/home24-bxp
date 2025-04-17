@@ -34,6 +34,7 @@ const ProductCategoryTree = () => {
 
           setExpandedKeys(['root', firstCategory.key]);
 
+          // select the first child node (first product) to list products on user's intial visit/page refresh
           if (firstNodeKey !== undefined) {
             setSelectedCategory(firstNodeKey as number);
           }
