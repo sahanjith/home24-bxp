@@ -9,9 +9,10 @@ const { TextArea } = Input;
 interface ProductFormProps {
   product: Product;
   onSave: (updatedProduct: Product) => void;
+  onCancel?: () => void;
 }
 
-const ProductForm: React.FC<ProductFormProps> = ({ product, onSave }) => {
+const ProductForm: React.FC<ProductFormProps> = ({ product, onSave, onCancel }) => {
   const [form] = Form.useForm();
   const { message } = App.useApp();
 
@@ -148,7 +149,8 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onSave }) => {
 
         <div className="col-span-2 flex justify-end gap-4 mt-4">
           <button
-            onClick={() => window.history.back()}
+            type="button"
+            onClick={onCancel || (() => window.history.back())}
             className="bg-gray-300 hover:bg-gray-400 text-black font-semibold py-2 px-4 rounded"
           >
             Cancel

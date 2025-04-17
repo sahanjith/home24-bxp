@@ -36,6 +36,7 @@ const ProductPage = () => {
       onSave={(product) => {
         setLastModifiedProduct(product);
       }}
+      onCancel={() => window.history.back()}
     />
   );
 };

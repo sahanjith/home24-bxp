@@ -184,6 +184,7 @@ const ProductList: React.FC<ProductListProps> = ({ selectedCategory, setLastModi
               );
               setLastModifiedProduct(updatedProduct);
             }}
+            onCancel={() => setDrawerVisible(false)}
           />
         )}
       </Drawer>
