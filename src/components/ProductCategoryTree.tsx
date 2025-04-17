@@ -2,16 +2,14 @@ import { Tree, TreeDataNode, Input } from 'antd';
 import { useEffect, useState } from 'react';
 
 import { mapCategoriesToTreeData } from '@/helpers/productCategoryTree';
+import { useProductStore } from '@/stores/productStore';
 import { handleError } from '@/utils/handleError';
 
-interface ProductCategoryTreeProps {
-  onCategorySelect: (categoryKey: number) => void;
-}
-
-const ProductCategoryTree = ({ onCategorySelect }: ProductCategoryTreeProps) => {
+const ProductCategoryTree = () => {
   const [treeData, setTreeData] = useState<TreeDataNode[]>([]);
   const [expandedKeys, setExpandedKeys] = useState<React.Key[]>([]);
   const [searchValue, setSearchValue] = useState('');
+  const setSelectedCategory = useProductStore((state) => state.setSelectedCategory);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -38,7 +36,7 @@ const ProductCategoryTree = ({ onCategorySelect }: ProductCategoryTreeProps) => 
 
           // select the first child node (first product) to list products on user's intial visit/page refresh
           if (firstNodeKey !== undefined) {
-            onCategorySelect(firstNodeKey as number);
+            setSelectedCategory(firstNodeKey as number);
           }
         } else {
           setExpandedKeys(['root']);
@@ -49,7 +47,7 @@ const ProductCategoryTree = ({ onCategorySelect }: ProductCategoryTreeProps) => 
     };
 
     fetchCategories();
-  }, []);
+  }, [setSelectedCategory]);
 
   const getExpandedKeysForSearch = (data: TreeDataNode[], query: string): React.Key[] => {
     const keys = new Set<React.Key>();
@@ -78,7 +76,7 @@ const ProductCategoryTree = ({ onCategorySelect }: ProductCategoryTreeProps) => 
     },
   ) => {
     if (selectedKeys.length > 0 && !info.node.children) {
-      onCategorySelect(selectedKeys[0] as number);
+      setSelectedCategory(selectedKeys[0] as number);
     }
   };
 
@@ -111,7 +109,7 @@ const ProductCategoryTree = ({ onCategorySelect }: ProductCategoryTreeProps) => 
           );
         }}
         data-testid="product-category-tree"
-        onSelect={(selectedKeys, info) => handleSelect(selectedKeys, info)}
+        onSelect={handleSelect}
       />
     </div>
   );
