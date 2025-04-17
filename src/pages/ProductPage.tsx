@@ -20,14 +20,13 @@ const ProductPage = () => {
         if (!res.ok) throw new Error('Failed to fetch product');
         const productData = await res.json();
         setProduct(productData);
-        setLastModifiedProduct(productData);
       } catch (error) {
         handleError(error);
       }
     };
 
     fetchProduct();
-  }, [id, setLastModifiedProduct]);
+  }, [id]);
 
   if (!product) return <div className="p-8">Loading...</div>;
 

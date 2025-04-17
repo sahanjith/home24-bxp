@@ -9,9 +9,10 @@ import { handleError } from '@/utils/handleError';
 
 interface ProductListProps {
   selectedCategory: number | null;
+  setLastModifiedProduct: (product: Product | null) => void;
 }
 
-const ProductList: React.FC<ProductListProps> = ({ selectedCategory }) => {
+const ProductList: React.FC<ProductListProps> = ({ selectedCategory, setLastModifiedProduct }) => {
   const navigate = useNavigate();
 
   const [products, setProducts] = useState<Product[]>([]);
@@ -176,8 +177,12 @@ const ProductList: React.FC<ProductListProps> = ({ selectedCategory }) => {
           <ProductForm
             key={selectedProduct.id}
             product={selectedProduct}
-            onSave={() => {
+            onSave={(updatedProduct) => {
               setDrawerVisible(false);
+              setProducts((prevProducts) =>
+                prevProducts.map((p) => (p.id === updatedProduct.id ? updatedProduct : p)),
+              );
+              setLastModifiedProduct(updatedProduct);
             }}
           />
         )}

@@ -154,8 +154,8 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onSave }) => {
             Cancel
           </button>
           <button
+            type="submit"
             data-testid="product-save-button"
-            onClick={() => form.submit()}
             className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded"
           >
             Save
