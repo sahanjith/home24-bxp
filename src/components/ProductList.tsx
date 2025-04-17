@@ -1,7 +1,9 @@
-import { List, Select } from 'antd';
+import { Drawer, List, Select } from 'antd';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import ProductForm from '@/components/ProductForm';
+import { useIsMobile } from '@/hooks/useIsMobile';
 import { Product } from '@/types';
 import { handleError } from '@/utils/handleError';
 
@@ -17,6 +19,9 @@ const ProductList: React.FC<ProductListProps> = ({ selectedCategory }) => {
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
   const [sortField, setSortField] = useState<'name' | 'sku'>('name');
   const [pageSize, setPageSize] = useState(5);
+  const [drawerVisible, setDrawerVisible] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const isMobile = useIsMobile();
   const listRef = useRef<HTMLDivElement>(null);
 
   const sortProducts = (items: Product[]) => {
@@ -130,7 +135,14 @@ const ProductList: React.FC<ProductListProps> = ({ selectedCategory }) => {
                 <button
                   key="edit"
                   className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded transition"
-                  onClick={() => navigate(`product/${product.id}`)}
+                  onClick={() => {
+                    if (isMobile) {
+                      navigate(`product/${product.id}`);
+                    } else {
+                      setSelectedProduct(product);
+                      setDrawerVisible(true);
+                    }
+                  }}
                 >
                   Edit
                 </button>,
@@ -153,6 +165,23 @@ const ProductList: React.FC<ProductListProps> = ({ selectedCategory }) => {
           )}
         />
       )}
+      <Drawer
+        title="Edit Product"
+        width={600}
+        open={drawerVisible}
+        onClose={() => setDrawerVisible(false)}
+        destroyOnClose
+      >
+        {selectedProduct && (
+          <ProductForm
+            key={selectedProduct.id}
+            product={selectedProduct}
+            onSave={() => {
+              setDrawerVisible(false);
+            }}
+          />
+        )}
+      </Drawer>
     </div>
   );
 };
