@@ -1,6 +1,7 @@
 import { Input, Switch, Select, Form, App } from 'antd';
 import { useEffect } from 'react';
 
+import { useProductStore } from '@/stores/productStore';
 import { Product } from '@/types';
 import { handleError } from '@/utils/handleError';
 
@@ -8,13 +9,16 @@ const { TextArea } = Input;
 
 interface ProductFormProps {
   product: Product;
-  onSave: (updatedProduct: Product) => void;
   onCancel?: () => void;
 }
 
-const ProductForm: React.FC<ProductFormProps> = ({ product, onSave, onCancel }) => {
+const ProductForm: React.FC<ProductFormProps> = ({ product, onCancel }) => {
   const [form] = Form.useForm();
   const { message } = App.useApp();
+
+  const updateProductInStore = useProductStore((state) => state.updateProduct);
+  const setDrawerVisible = useProductStore((state) => state.setDrawerVisible);
+  const setSelectedProduct = useProductStore((state) => state.setSelectedProduct);
 
   useEffect(() => {
     form.setFieldsValue({
@@ -39,8 +43,10 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onSave, onCancel }) 
         throw new Error('Failed to update product');
       }
 
-      onSave(updatedProduct);
+      updateProductInStore(updatedProduct);
       message.success('Product saved successfully');
+      setDrawerVisible(false);
+      setSelectedProduct(null);
     } catch (error) {
       handleError(error);
     }

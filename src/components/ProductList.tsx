@@ -4,24 +4,19 @@ import { useNavigate } from 'react-router-dom';
 
 import ProductDrawer from '@/components/ProductDrawer';
 import { useIsMobile } from '@/hooks/useIsMobile';
+import { useProductStore } from '@/stores/productStore';
 import { Product } from '@/types';
 import { handleError } from '@/utils/handleError';
 
-interface ProductListProps {
-  selectedCategory: number | null;
-  setLastModifiedProduct: (product: Product | null) => void;
-}
-
-const ProductList: React.FC<ProductListProps> = ({ selectedCategory, setLastModifiedProduct }) => {
+const ProductList: React.FC = () => {
+  const { products, setProducts, selectedCategory, setDrawerVisible, setSelectedProduct } =
+    useProductStore();
   const navigate = useNavigate();
 
-  const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
   const [sortField, setSortField] = useState<'name' | 'sku'>('name');
   const [pageSize, setPageSize] = useState(5);
-  const [drawerVisible, setDrawerVisible] = useState(false);
-  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const isMobile = useIsMobile();
   const listRef = useRef<HTMLDivElement>(null);
 
@@ -58,7 +53,8 @@ const ProductList: React.FC<ProductListProps> = ({ selectedCategory, setLastModi
   }, [selectedCategory]);
 
   useEffect(() => {
-    setProducts((prev) => sortProducts(prev));
+    const sorted = sortProducts(products);
+    setProducts(sorted);
   }, [sortOrder, sortField]);
 
   useEffect(() => {
@@ -166,16 +162,7 @@ const ProductList: React.FC<ProductListProps> = ({ selectedCategory, setLastModi
           )}
         />
       )}
-      <ProductDrawer
-        open={drawerVisible}
-        product={selectedProduct}
-        onClose={() => setDrawerVisible(false)}
-        onSave={(updatedProduct) => {
-          setDrawerVisible(false);
-          setProducts((prev) => prev.map((p) => (p.id === updatedProduct.id ? updatedProduct : p)));
-          setLastModifiedProduct(updatedProduct);
-        }}
-      />
+      <ProductDrawer />
     </div>
   );
 };

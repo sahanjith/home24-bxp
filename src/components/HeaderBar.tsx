@@ -5,14 +5,11 @@ import { useNavigate } from 'react-router-dom';
 
 import logo from '@/assets/home24-logo-full.png';
 import LastModifiedProduct from '@/components/LastModifiedProduct';
-import { Product } from '@/types';
+import { useProductStore } from '@/stores/productStore';
 
-interface HeaderBarProps {
-  lastModifiedProduct: Product | null;
-}
-
-const HeaderBar: React.FC<HeaderBarProps> = ({ lastModifiedProduct }) => {
+const HeaderBar: React.FC = () => {
   const navigate = useNavigate();
+  const { lastModifiedProduct } = useProductStore();
 
   const handleLogout = () => {
     localStorage.clear();
@@ -33,7 +30,7 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ lastModifiedProduct }) => {
           <img src={logo} alt="Home24" className="h-8" data-testid="logo-main" />
         </div>
         <div className="flex items-center gap-4">
-          {lastModifiedProduct && <LastModifiedProduct lastModifiedProduct={lastModifiedProduct} />}
+          {lastModifiedProduct && <LastModifiedProduct />}
           <Dropdown
             menu={{
               items,

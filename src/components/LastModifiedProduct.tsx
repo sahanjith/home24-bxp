@@ -1,20 +1,19 @@
-import { useState } from 'react';
-
 import ProductDrawer from '@/components/ProductDrawer';
-import { Product } from '@/types';
+import { useProductStore } from '@/stores/productStore';
 
-interface LastModifiedProductProps {
-  lastModifiedProduct: Product | null;
-}
-
-const LastModifiedProduct: React.FC<LastModifiedProductProps> = ({ lastModifiedProduct }) => {
-  const [drawerVisible, setDrawerVisible] = useState(false);
+const LastModifiedProduct: React.FC = () => {
+  const { lastModifiedProduct, setDrawerVisible, setSelectedProduct } = useProductStore();
 
   return (
     <>
       <button
         data-testid="last-modified-product-button"
-        onClick={() => setDrawerVisible(true)}
+        onClick={() => {
+          if (lastModifiedProduct) {
+            setSelectedProduct(lastModifiedProduct);
+            setDrawerVisible(true);
+          }
+        }}
         className="flex items-center gap-3 px-4 py-1 mx-2 rounded-lg bg-gray-50 border border-gray-200 hover:shadow transition text-left w-auto"
       >
         <img
@@ -34,12 +33,7 @@ const LastModifiedProduct: React.FC<LastModifiedProductProps> = ({ lastModifiedP
           </div>
         </div>
       </button>
-      <ProductDrawer
-        open={drawerVisible}
-        product={lastModifiedProduct}
-        onClose={() => setDrawerVisible(false)}
-        onSave={() => setDrawerVisible(false)}
-      />
+      <ProductDrawer />
     </>
   );
 };
