@@ -2,14 +2,17 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 
 import HeaderBar from '@/components/HeaderBar';
-import { Product } from '@/types';
+import { useProductStore } from '@/stores/productStore';
 
 jest.mock('@/assets/home24-logo-full.png', () => 'mock-logo');
+jest.mock('@/stores/productStore', () => ({
+  useProductStore: jest.fn(),
+}));
 
-const setup = (lastModifiedProduct: Product | null = null) => {
+const setup = () => {
   render(
     <BrowserRouter>
-      <HeaderBar lastModifiedProduct={lastModifiedProduct} />
+      <HeaderBar />
     </BrowserRouter>,
   );
 };
@@ -30,6 +33,9 @@ const mockProduct = {
 describe('HeaderBar', () => {
   beforeEach(() => {
     localStorage.clear();
+    (useProductStore as jest.MockedFunction<typeof useProductStore>).mockReturnValue({
+      lastModifiedProduct: null,
+    });
   });
 
   it('renders logo and user avatar with dropdown', () => {
@@ -54,7 +60,10 @@ describe('HeaderBar', () => {
   });
 
   it('renders last modified product component when provided', () => {
-    setup(mockProduct);
+    (useProductStore as jest.MockedFunction<typeof useProductStore>).mockReturnValue({
+      lastModifiedProduct: mockProduct,
+    });
+    setup();
     expect(screen.getByTestId('last-modified-product-button')).toBeInTheDocument();
   });
 });
