@@ -1,8 +1,8 @@
-import { Drawer, List, Select } from 'antd';
+import { List, Select } from 'antd';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import ProductForm from '@/components/ProductForm';
+import ProductDrawer from '@/components/ProductDrawer';
 import { useIsMobile } from '@/hooks/useIsMobile';
 import { Product } from '@/types';
 import { handleError } from '@/utils/handleError';
@@ -166,28 +166,16 @@ const ProductList: React.FC<ProductListProps> = ({ selectedCategory, setLastModi
           )}
         />
       )}
-      <Drawer
-        title="Edit Product"
-        width={600}
+      <ProductDrawer
         open={drawerVisible}
+        product={selectedProduct}
         onClose={() => setDrawerVisible(false)}
-        destroyOnClose
-      >
-        {selectedProduct && (
-          <ProductForm
-            key={selectedProduct.id}
-            product={selectedProduct}
-            onSave={(updatedProduct) => {
-              setDrawerVisible(false);
-              setProducts((prevProducts) =>
-                prevProducts.map((p) => (p.id === updatedProduct.id ? updatedProduct : p)),
-              );
-              setLastModifiedProduct(updatedProduct);
-            }}
-            onCancel={() => setDrawerVisible(false)}
-          />
-        )}
-      </Drawer>
+        onSave={(updatedProduct) => {
+          setDrawerVisible(false);
+          setProducts((prev) => prev.map((p) => (p.id === updatedProduct.id ? updatedProduct : p)));
+          setLastModifiedProduct(updatedProduct);
+        }}
+      />
     </div>
   );
 };

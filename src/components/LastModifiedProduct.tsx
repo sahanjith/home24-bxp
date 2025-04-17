@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import ProductModal from '@/components/ProductModal';
+import ProductDrawer from '@/components/ProductDrawer';
 import { Product } from '@/types';
 
 interface LastModifiedProductProps {
@@ -8,13 +8,13 @@ interface LastModifiedProductProps {
 }
 
 const LastModifiedProduct: React.FC<LastModifiedProductProps> = ({ lastModifiedProduct }) => {
-  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [drawerVisible, setDrawerVisible] = useState(false);
 
   return (
     <>
       <button
         data-testid="last-modified-product-button"
-        onClick={() => setIsModalVisible(true)}
+        onClick={() => setDrawerVisible(true)}
         className="flex items-center gap-3 px-4 py-1 mx-2 rounded-lg bg-gray-50 border border-gray-200 hover:shadow transition text-left w-auto"
       >
         <img
@@ -34,13 +34,11 @@ const LastModifiedProduct: React.FC<LastModifiedProductProps> = ({ lastModifiedP
           </div>
         </div>
       </button>
-      <ProductModal
-        visible={isModalVisible}
-        onClose={() => setIsModalVisible(false)}
+      <ProductDrawer
+        open={drawerVisible}
         product={lastModifiedProduct}
-        onSave={() => {
-          setIsModalVisible(false);
-        }}
+        onClose={() => setDrawerVisible(false)}
+        onSave={() => setDrawerVisible(false)}
       />
     </>
   );
