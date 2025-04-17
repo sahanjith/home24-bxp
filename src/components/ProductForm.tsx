@@ -81,6 +81,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onCancel }) => {
     <div>
       <h1 className="text-2xl font-bold mb-6 text-gray-800">Product Details</h1>
       <Form
+        data-testid="product-form"
         form={form}
         layout="vertical"
         onFinish={handleFinish}
