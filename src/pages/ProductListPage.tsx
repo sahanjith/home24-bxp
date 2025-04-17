@@ -1,40 +1,11 @@
-import { Layout } from 'antd';
-import { useState } from 'react';
+import { useOutletContext } from 'react-router-dom';
 
-import HeaderBar from '@/components/HeaderBar';
-import ProductCategoryTree from '@/components/ProductCategoryTree';
 import ProductList from '@/components/ProductList';
-import { Product } from '@/types';
-
-const { Header, Content } = Layout;
 
 const ProductListPage = () => {
-  const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [lastModifiedProduct, setLastModifiedProduct] = useState<Product | null>(null);
+  const { selectedCategory } = useOutletContext<{ selectedCategory: number | null }>();
 
-  return (
-    <div className="min-h-screen w-screen overflow-hidden">
-      <Layout className="min-h-screen w-full">
-        {/* Header */}
-        <Header className="bg-white px-4 py-2 shadow-md w-full flex justify-between items-center">
-          <HeaderBar lastModifiedProduct={lastModifiedProduct} />
-        </Header>
-
-        <Layout className="w-full h-full">
-          {/* Left panel */}
-          <Layout.Sider width={250} className="bg-white p-4 shadow-inner">
-            <ProductCategoryTree onCategorySelect={setSelectedCategory} />
-          </Layout.Sider>
-
-          {/* Main content */}
-          <Content className="bg-gray-100 p-4 w-full h-full overflow-y-auto">
-            <ProductList selectedCategory={selectedCategory} />
-          </Content>
-        </Layout>
-      </Layout>
-    </div>
-  );
+  return <ProductList selectedCategory={selectedCategory} />;
 };
 
 export default ProductListPage;

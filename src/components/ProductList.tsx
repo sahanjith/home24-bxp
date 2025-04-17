@@ -130,7 +130,7 @@ const ProductList: React.FC<ProductListProps> = ({ selectedCategory }) => {
                 <button
                   key="edit"
                   className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded transition"
-                  onClick={() => navigate(`/product/${product.id}`)}
+                  onClick={() => navigate(`product/${product.id}`)}
                 >
                   Edit
                 </button>,

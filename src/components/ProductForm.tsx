@@ -85,7 +85,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ onSave }) => {
   };
 
   return (
-    <div className="p-8 max-w-5xl mx-auto bg-white shadow-md rounded">
+    <div>
       <h1 className="text-2xl font-bold mb-6 text-gray-800">Product Details</h1>
       {product && (
         <Form
