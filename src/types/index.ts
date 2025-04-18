@@ -3,6 +3,12 @@ export interface LoginFormValues {
   password: string;
 }
 
+export interface ProductAttribute {
+  attributeName: string;
+  attributeType: 'number' | 'text' | 'url' | 'tags' | 'boolean';
+  attributeValue: number | string | string[] | boolean;
+}
+
 export interface Product {
   id: number;
   name: string;
@@ -12,6 +18,7 @@ export interface Product {
   available: boolean;
   description?: string;
   colors?: string[];
+  attributes?: ProductAttribute[];
 }
 
 export interface SubCategory {

@@ -1,6 +1,6 @@
 import { rest } from 'msw';
 
-import { Category, SubCategory } from '@/types';
+import { Product } from '@/types';
 
 import { demoCredentials } from './config';
 import { products } from '../../__mocks__/data/productData';
@@ -21,10 +21,10 @@ export const handlers = [
     return res(ctx.status(401), ctx.json({ message: 'Invalid username or password' }));
   }),
   rest.get('/api/categories', (_req, res, ctx) => {
-    const categories = products.map((category: Category) => ({
+    const categories = products.map((category) => ({
       id: category.id,
       name: category.category,
-      subcategories: category.subCategories.map((sub: SubCategory) => ({
+      subcategories: category.subCategories.map((sub) => ({
         id: sub.id,
         name: sub.subCategory,
       })),
@@ -47,6 +47,7 @@ export const handlers = [
             available: product.available,
             description: product.description,
             colors: product.colors,
+            ...(product.attributes && { attributes: product.attributes }),
           })),
       ),
     );
@@ -56,8 +57,10 @@ export const handlers = [
   rest.get('/api/product/:productId', (req, res, ctx) => {
     const productId = Number(req.params.productId);
     const product = products
-      .flatMap((category) => category.subCategories.flatMap((subCategory) => subCategory.products))
-      .find((product) => product.id === productId);
+      .flatMap((category) =>
+        category.subCategories.flatMap((subCategory) => subCategory.products as Product[]),
+      )
+      .find((product) => (product as Product).id === productId);
 
     if (product) {
       return res(ctx.status(200), ctx.json(product));

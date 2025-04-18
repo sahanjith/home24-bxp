@@ -17,6 +17,18 @@ export const products = [
             available: i % 2 === 0,
             description: `A premium leather sofa model ${i + 1}.`,
             colors: ['Black', 'Brown', 'Beige'],
+            attributes: [
+              {
+                attributeName: 'Height',
+                attributeType: 'number',
+                attributeValue: 28,
+              },
+              {
+                attributeName: 'Style',
+                attributeType: 'tags',
+                attributeValue: ['modern', 'luxury'],
+              },
+            ],
           })),
         ],
       },
@@ -34,6 +46,18 @@ export const products = [
             available: true,
             description: 'Solid wood dining table for 6 people.',
             colors: ['Walnut', 'Oak'],
+            attributes: [
+              {
+                attributeName: 'Material',
+                attributeType: 'text',
+                attributeValue: 'Solid wood',
+              },
+              {
+                attributeName: 'Eco Friendly',
+                attributeType: 'boolean',
+                attributeValue: true,
+              },
+            ],
           },
           {
             id: 300004,
@@ -67,6 +91,18 @@ export const products = [
             available: true,
             description: 'Durable patio set with chairs and table.',
             colors: ['Gray', 'White'],
+            attributes: [
+              {
+                attributeName: 'Style',
+                attributeType: 'tags',
+                attributeValue: ['outdoor', 'comfortable'],
+              },
+              {
+                attributeName: 'Weight',
+                attributeType: 'number',
+                attributeValue: 150,
+              },
+            ],
           },
           {
             id: 300006,
@@ -94,6 +130,18 @@ export const products = [
             available: true,
             description: 'Sturdy garden rake with ergonomic handle.',
             colors: ['Red', 'Green'],
+            attributes: [
+              {
+                attributeName: 'Material',
+                attributeType: 'text',
+                attributeValue: 'Steel',
+              },
+              {
+                attributeName: 'Length',
+                attributeType: 'number',
+                attributeValue: 150,
+              },
+            ],
           },
           {
             id: 300008,
@@ -127,6 +175,18 @@ export const products = [
             available: true,
             description: 'Elegant ceramic vase for any decor.',
             colors: ['White', 'Blue', 'Gold'],
+            attributes: [
+              {
+                attributeName: 'Style',
+                attributeType: 'tags',
+                attributeValue: ['elegant', 'ceramic'],
+              },
+              {
+                attributeName: 'Height',
+                attributeType: 'number',
+                attributeValue: 12,
+              },
+            ],
           },
           {
             id: 300010,
@@ -154,6 +214,18 @@ export const products = [
             available: true,
             description: 'Handwoven storage baskets for organization.',
             colors: ['Natural', 'White'],
+            attributes: [
+              {
+                attributeName: 'Material',
+                attributeType: 'text',
+                attributeValue: 'Wicker',
+              },
+              {
+                attributeName: 'Eco Friendly',
+                attributeType: 'boolean',
+                attributeValue: true,
+              },
+            ],
           },
           {
             id: 300012,
@@ -187,6 +259,18 @@ export const products = [
             available: true,
             description: 'Crystal chandelier for a luxurious look.',
             colors: ['Gold', 'Clear'],
+            attributes: [
+              {
+                attributeName: 'Material',
+                attributeType: 'text',
+                attributeValue: 'Crystal',
+              },
+              {
+                attributeName: 'Weight',
+                attributeType: 'number',
+                attributeValue: 5,
+              },
+            ],
           },
           {
             id: 300014,
@@ -214,6 +298,18 @@ export const products = [
             available: true,
             description: 'Adjustable LED desk lamp with USB charging.',
             colors: ['Black', 'Silver'],
+            attributes: [
+              {
+                attributeName: 'Brightness',
+                attributeType: 'number',
+                attributeValue: 800,
+              },
+              {
+                attributeName: 'Style',
+                attributeType: 'tags',
+                attributeValue: ['modern', 'LED'],
+              },
+            ],
           },
           {
             id: 300016,
@@ -224,6 +320,18 @@ export const products = [
             available: true,
             description: 'Soft glow bedside lamp with touch control.',
             colors: ['White', 'Wood'],
+            attributes: [
+              {
+                attributeName: 'Material',
+                attributeType: 'text',
+                attributeValue: 'Wood',
+              },
+              {
+                attributeName: 'Eco Friendly',
+                attributeType: 'boolean',
+                attributeValue: true,
+              },
+            ],
           },
         ],
       },
@@ -247,6 +355,18 @@ export const products = [
             available: true,
             description: 'Non-stick frying pan with ergonomic handle.',
             colors: ['Black', 'Red'],
+            attributes: [
+              {
+                attributeName: 'Material',
+                attributeType: 'text',
+                attributeValue: 'Aluminum',
+              },
+              {
+                attributeName: 'Diameter',
+                attributeType: 'number',
+                attributeValue: 28,
+              },
+            ],
           },
           {
             id: 300018,
@@ -274,6 +394,18 @@ export const products = [
             available: true,
             description: 'Heat-resistant silicone spatula.',
             colors: ['Green', 'Orange'],
+            attributes: [
+              {
+                attributeName: 'Material',
+                attributeType: 'text',
+                attributeValue: 'Silicone',
+              },
+              {
+                attributeName: 'Length',
+                attributeType: 'number',
+                attributeValue: 30,
+              },
+            ],
           },
           {
             id: 300020,
@@ -307,6 +439,18 @@ export const products = [
             available: true,
             description: 'Spacious queen-size bed with headboard.',
             colors: ['Gray', 'White'],
+            attributes: [
+              {
+                attributeName: 'Size',
+                attributeType: 'text',
+                attributeValue: 'Queen',
+              },
+              {
+                attributeName: 'Weight',
+                attributeType: 'number',
+                attributeValue: 50,
+              },
+            ],
           },
           {
             id: 300022,
@@ -334,6 +478,18 @@ export const products = [
             available: true,
             description: 'Spacious 2-door wardrobe with mirror.',
             colors: ['Walnut', 'Oak'],
+            attributes: [
+              {
+                attributeName: 'Material',
+                attributeType: 'text',
+                attributeValue: 'Wood',
+              },
+              {
+                attributeName: 'Eco Friendly',
+                attributeType: 'boolean',
+                attributeValue: true,
+              },
+            ],
           },
           {
             id: 300024,
