@@ -42,7 +42,11 @@ export const handlers = [
             id: product.id,
             name: product.name,
             categoryId: product.categoryId,
-            attributes: product.attributes,
+            sku: product.sku,
+            url: product.url,
+            available: product.available,
+            description: product.description,
+            colors: product.colors,
           })),
       ),
     );
@@ -74,10 +78,6 @@ export const handlers = [
           subCategory.products[productIndex] = {
             ...subCategory.products[productIndex],
             ...updatedData,
-            attributes: {
-              ...subCategory.products[productIndex].attributes,
-              ...updatedData.attributes,
-            },
           };
           foundProduct = subCategory.products[productIndex];
         }

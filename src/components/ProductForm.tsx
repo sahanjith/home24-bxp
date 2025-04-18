@@ -23,11 +23,11 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onCancel }) => {
   useEffect(() => {
     form.setFieldsValue({
       name: product.name,
-      sku: product.attributes?.sku,
-      url: product.attributes?.url,
-      description: product.attributes?.description,
-      available: product.attributes?.available,
-      colors: product.attributes?.colors,
+      sku: product.sku,
+      url: product.url,
+      description: product.description,
+      available: product.available,
+      colors: product.colors,
     });
   }, [product, form]);
 
@@ -64,14 +64,11 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onCancel }) => {
       const updatedProduct: Product = {
         ...product,
         name: values.name,
-        attributes: {
-          ...product.attributes,
-          sku: values.sku,
-          url: values.url,
-          description: values.description,
-          available: values.available,
-          colors: values.colors,
-        },
+        sku: values.sku,
+        url: values.url,
+        description: values.description,
+        available: values.available,
+        colors: values.colors,
       };
       updateProduct(updatedProduct);
     }
@@ -110,7 +107,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onCancel }) => {
         </div>
         <div className="flex justify-center items-start mt-4 sm:mt-0">
           <img
-            src={product?.attributes?.url}
+            src={product?.url}
             alt={product.name}
             className="w-full max-w-xs rounded shadow-md"
             data-testid="product-image"

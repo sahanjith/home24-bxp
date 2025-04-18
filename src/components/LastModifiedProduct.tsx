@@ -17,7 +17,7 @@ const LastModifiedProduct: React.FC = () => {
         className="flex items-center gap-3 px-4 py-1 mx-2 rounded-lg bg-gray-50 border border-gray-200 hover:shadow transition text-left w-auto"
       >
         <img
-          src={lastModifiedProduct?.attributes?.url || 'https://via.placeholder.com/40'}
+          src={lastModifiedProduct?.url || 'https://via.placeholder.com/40'}
           alt="Product"
           className="w-10 h-10 object-cover rounded"
         />
@@ -29,7 +29,7 @@ const LastModifiedProduct: React.FC = () => {
             {lastModifiedProduct?.name}
           </div>
           <div className="text-gray-500" data-testid="last-modified-product-sku">
-            {lastModifiedProduct?.attributes?.sku}
+            {lastModifiedProduct?.sku}
           </div>
         </div>
       </button>

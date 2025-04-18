@@ -22,7 +22,7 @@ const ProductList: React.FC = () => {
 
   const sortProducts = (items: Product[]) => {
     const getField = (product: Product) => {
-      if (sortField === 'sku') return product.attributes?.sku || '';
+      if (sortField === 'sku') return product?.sku || '';
       return product.name || '';
     };
 
@@ -148,15 +148,13 @@ const ProductList: React.FC = () => {
               <List.Item.Meta
                 avatar={
                   <img
-                    src={product.attributes?.url || 'https://via.placeholder.com/64'}
+                    src={product?.url || 'https://via.placeholder.com/64'}
                     alt={`Image of ${product.name}`}
                     className="w-16 h-16 object-cover rounded"
                   />
                 }
                 title={<span className="text-gray-800 font-medium">{product.name}</span>}
-                description={
-                  <span className="text-gray-500 text-sm">{product.attributes?.sku}</span>
-                }
+                description={<span className="text-gray-500 text-sm">{product?.sku}</span>}
               />
             </List.Item>
           )}

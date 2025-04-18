@@ -3,19 +3,15 @@ export interface LoginFormValues {
   password: string;
 }
 
-export interface ProductAttributes {
+export interface Product {
+  id: number;
+  name: string;
+  categoryId: number; // refers to subCategory id
   sku: number;
   url: string;
   available: boolean;
   description?: string;
   colors?: string[];
-}
-
-export interface Product {
-  id: number;
-  name: string;
-  categoryId: number; // refers to subCategory id
-  attributes?: ProductAttributes;
 }
 
 export interface SubCategory {

@@ -12,13 +12,11 @@ const mockProduct: Product = {
   id: 1,
   name: 'Test Sofa',
   categoryId: 100,
-  attributes: {
-    sku: 12345,
-    url: 'https://via.placeholder.com/40',
-    available: true,
-    description: 'A comfy test sofa',
-    colors: ['red', 'blue'],
-  },
+  sku: 12345,
+  url: 'https://via.placeholder.com/40',
+  available: true,
+  description: 'A comfy test sofa',
+  colors: ['red', 'blue'],
 };
 
 describe('LastModifiedProduct', () => {
