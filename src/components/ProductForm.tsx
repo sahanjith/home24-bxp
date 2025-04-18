@@ -122,34 +122,38 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onCancel }) => {
           <Input data-testid="product-image-url" />
         </Form.Item>
 
-        <Form.Item name="colors" label="Colors" className="col-span-2">
-          <Select mode="multiple" placeholder="Select colors" data-testid="product-colors">
-            {[
-              'Black',
-              'White',
-              'Red',
-              'Blue',
-              'Green',
-              'Gray',
-              'Brown',
-              'Beige',
-              'Gold',
-              'Silver',
-            ].map((color) => (
-              <Select.Option key={color} value={color}>
-                {color}
-              </Select.Option>
-            ))}
-          </Select>
-        </Form.Item>
-        <Form.Item
-          name="description"
-          label="Description"
-          className="col-span-2"
-          rules={[{ required: true, message: 'Please enter description' }]}
-        >
-          <TextArea rows={3} data-testid="product-description" />
-        </Form.Item>
+        {product.colors && (
+          <Form.Item name="colors" label="Colors" className="col-span-2">
+            <Select mode="multiple" placeholder="Select colors" data-testid="product-colors">
+              {[
+                'Black',
+                'White',
+                'Red',
+                'Blue',
+                'Green',
+                'Gray',
+                'Brown',
+                'Beige',
+                'Gold',
+                'Silver',
+              ].map((color) => (
+                <Select.Option key={color} value={color}>
+                  {color}
+                </Select.Option>
+              ))}
+            </Select>
+          </Form.Item>
+        )}
+        {product.description && (
+          <Form.Item
+            name="description"
+            label="Description"
+            className="col-span-2"
+            rules={[{ required: true, message: 'Please enter description' }]}
+          >
+            <TextArea rows={3} data-testid="product-description" />
+          </Form.Item>
+        )}
 
         <div className="col-span-2 flex justify-end gap-4 mt-4">
           <button
