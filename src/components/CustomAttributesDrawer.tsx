@@ -17,6 +17,7 @@ const CustomAttributesDrawer: React.FC<Props> = ({ open, onClose }) => {
       open={open}
       onClose={onClose}
       destroyOnClose={false}
+      forceRender
     >
       <div className="p-4">
         <Form.List name="attributes">

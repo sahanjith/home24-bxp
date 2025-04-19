@@ -15,6 +15,7 @@ const ProductDrawer: React.FC = () => {
         open={drawerVisible}
         onClose={() => setDrawerVisible(false)}
         destroyOnClose
+        forceRender
       >
         {selectedProduct && (
           <ProductForm
