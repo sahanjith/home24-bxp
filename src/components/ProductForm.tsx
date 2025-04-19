@@ -180,7 +180,14 @@ const ProductForm: React.FC<ProductFormProps> = ({
                 Edit Custom Attributes
               </button>
             </Form.Item>
-            <CustomAttributesDrawer open={customOpen} onClose={() => setCustomOpen(false)} />
+            <CustomAttributesDrawer
+              open={customOpen}
+              onClose={() => {
+                form.setFieldsValue({ attributes: product.attributes || [] });
+                setCustomOpen(false);
+              }}
+              onDone={() => setCustomOpen(false)}
+            />
           </>
         )}
 

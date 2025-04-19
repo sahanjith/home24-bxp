@@ -5,9 +5,10 @@ import DynamicValueInput from '@/components/DynamicValueInput';
 interface Props {
   open: boolean;
   onClose: () => void;
+  onDone: () => void;
 }
 
-const CustomAttributesDrawer: React.FC<Props> = ({ open, onClose }) => {
+const CustomAttributesDrawer: React.FC<Props> = ({ open, onClose, onDone }) => {
   const form = Form.useFormInstance();
 
   return (
@@ -20,7 +21,7 @@ const CustomAttributesDrawer: React.FC<Props> = ({ open, onClose }) => {
       forceRender
       footer={
         <div className="flex justify-end p-4 border-t">
-          <Button onClick={onClose}>Done</Button>
+          <Button onClick={onDone}>Done</Button>
         </div>
       }
     >
