@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { devtools } from 'zustand/middleware';
 
 import { Product } from '@/types';
 
@@ -16,20 +17,32 @@ interface ProductStore {
   setSelectedProduct: (product: Product | null) => void;
 }
 
-export const useProductStore = create<ProductStore>((set) => ({
-  products: [],
-  lastModifiedProduct: null,
-  selectedCategory: null,
-  setProducts: (products) => set({ products }),
-  updateProduct: (updated) =>
-    set((state) => ({
-      products: state.products.map((p) => (p.id === updated.id ? updated : p)),
-      lastModifiedProduct: updated,
-    })),
-  setLastModifiedProduct: (product) => set({ lastModifiedProduct: product }),
-  setSelectedCategory: (categoryId) => set({ selectedCategory: categoryId }),
-  drawerVisible: false,
-  setDrawerVisible: (visible) => set({ drawerVisible: visible }),
-  selectedProduct: null,
-  setSelectedProduct: (product) => set({ selectedProduct: product }),
-}));
+export const useProductStore = create<ProductStore>()(
+  devtools(
+    (set) => ({
+      products: [],
+      lastModifiedProduct: null,
+      selectedCategory: null,
+      setProducts: (products) => set({ products }, false, 'setProducts'),
+      updateProduct: (updated) =>
+        set(
+          (state) => ({
+            products: state.products.map((p) => (p.id === updated.id ? updated : p)),
+            lastModifiedProduct: updated,
+          }),
+          false,
+          'updateProduct',
+        ),
+      setLastModifiedProduct: (product) =>
+        set({ lastModifiedProduct: product }, false, 'setLastModifiedProduct'),
+      setSelectedCategory: (categoryId) =>
+        set({ selectedCategory: categoryId }, false, 'setSelectedCategory'),
+      drawerVisible: false,
+      setDrawerVisible: (visible) => set({ drawerVisible: visible }, false, 'setDrawerVisible'),
+      selectedProduct: null,
+      setSelectedProduct: (product) =>
+        set({ selectedProduct: product }, false, 'setSelectedProduct'),
+    }),
+    { name: 'ProductStore' },
+  ),
+);

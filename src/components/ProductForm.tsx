@@ -2,10 +2,69 @@ import { Input, Switch, Select, Form, App } from 'antd';
 import { useEffect } from 'react';
 
 import { useProductStore } from '@/stores/productStore';
-import { Product } from '@/types';
+import { Product, ProductAttribute } from '@/types';
 import { handleError } from '@/utils/handleError';
 
 const { TextArea } = Input;
+
+const DynamicValueInput = ({ name }: { name: number }) => {
+  const form = Form.useFormInstance();
+  const type = Form.useWatch(['attributes', name, 'attributeType'], form);
+  const value = Form.useWatch(['attributes', name, 'attributeValue'], form);
+
+  switch (type) {
+    case 'text':
+    case 'number':
+      return (
+        <Input
+          placeholder="Value"
+          value={value}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            form.setFieldValue(['attributes', name, 'attributeValue'], e.target.value)
+          }
+        />
+      );
+    case 'url':
+      return (
+        <TextArea
+          rows={1}
+          placeholder="URL"
+          value={value}
+          onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+            form.setFieldValue(['attributes', name, 'attributeValue'], e.target.value)
+          }
+        />
+      );
+    case 'tags':
+      return (
+        <Select
+          mode="tags"
+          placeholder="Tags"
+          value={value}
+          onChange={(val) => form.setFieldValue(['attributes', name, 'attributeValue'], val)}
+        />
+      );
+    case 'boolean':
+      return (
+        <Switch
+          checked={value}
+          onChange={(checked) =>
+            form.setFieldValue(['attributes', name, 'attributeValue'], checked)
+          }
+        />
+      );
+    default:
+      return (
+        <Input
+          placeholder="Value"
+          value={value}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            form.setFieldValue(['attributes', name, 'attributeValue'], e.target.value)
+          }
+        />
+      );
+  }
+};
 
 interface ProductFormProps {
   product: Product;
@@ -13,6 +72,7 @@ interface ProductFormProps {
 }
 
 const ProductForm: React.FC<ProductFormProps> = ({ product, onCancel }) => {
+  console.log('product', product);
   const [form] = Form.useForm();
   const { message } = App.useApp();
 
@@ -28,6 +88,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onCancel }) => {
       description: product.description,
       available: product.available,
       colors: product.colors,
+      attributes: product.attributes || [],
     });
   }, [product, form]);
 
@@ -59,6 +120,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onCancel }) => {
     description: string;
     available: boolean;
     colors: string[];
+    attributes?: ProductAttribute[];
   }) => {
     if (product) {
       const updatedProduct: Product = {
@@ -69,6 +131,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onCancel }) => {
         description: values.description,
         available: values.available,
         colors: values.colors,
+        attributes: values.attributes,
       };
       updateProduct(updatedProduct);
     }
@@ -154,6 +217,76 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onCancel }) => {
             <TextArea rows={3} data-testid="product-description" />
           </Form.Item>
         )}
+
+        <Form.List name="attributes">
+          {(fields, { add, remove }) => (
+            <div className="col-span-2 space-y-4">
+              <label className="block text-sm font-medium text-gray-700">Custom Attributes</label>
+              {fields.map(({ key, name, ...restField }) => (
+                <div
+                  key={key}
+                  className="grid grid-cols-1 sm:grid-cols-4 gap-4 items-center border p-4 rounded"
+                >
+                  <Form.Item
+                    {...restField}
+                    name={[name, 'attributeName']}
+                    rules={[{ required: true, message: 'Enter attribute name' }]}
+                  >
+                    <Input placeholder="Attribute Name" />
+                  </Form.Item>
+                  <Form.Item
+                    {...restField}
+                    name={[name, 'attributeType']}
+                    rules={[{ required: true, message: 'Select attribute type' }]}
+                  >
+                    <Select placeholder="Type">
+                      <Select.Option value="text">Text</Select.Option>
+                      <Select.Option value="number">Number</Select.Option>
+                      <Select.Option value="url">URL</Select.Option>
+                      <Select.Option value="tags">Tags</Select.Option>
+                      <Select.Option value="boolean">Boolean</Select.Option>
+                    </Select>
+                  </Form.Item>
+                  <Form.Item
+                    shouldUpdate={(prev, curr) =>
+                      prev.attributes?.[name]?.attributeType !==
+                      curr.attributes?.[name]?.attributeType
+                    }
+                  >
+                    {() => {
+                      const type = form.getFieldValue(['attributes', name, 'attributeType']);
+                      return (
+                        <Form.Item
+                          {...restField}
+                          name={[name, 'attributeValue']}
+                          rules={[{ required: true, message: 'Enter value' }]}
+                        >
+                          {type ? <DynamicValueInput name={name} /> : null}
+                        </Form.Item>
+                      );
+                    }}
+                  </Form.Item>
+                  <button
+                    type="button"
+                    onClick={() => remove(name)}
+                    className="text-red-500 font-semibold"
+                  >
+                    Delete
+                  </button>
+                </div>
+              ))}
+              <Form.Item>
+                <button
+                  type="button"
+                  onClick={() => add()}
+                  className="bg-green-500 hover:bg-green-600 text-white font-semibold py-1 px-3 rounded"
+                >
+                  Add Attribute
+                </button>
+              </Form.Item>
+            </div>
+          )}
+        </Form.List>
 
         <div className="col-span-2 flex justify-end gap-4 mt-4">
           <button
