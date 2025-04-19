@@ -259,19 +259,21 @@ const ProductForm: React.FC<ProductFormProps> = ({
           </div>
         )}
 
-        <Form.Item className="col-span-2 flex justify-end gap-4 mt-4">
-          <Button onClick={onCancel} className="mr-4">
-            Cancel
-          </Button>
-          <Button
-            type="primary"
-            htmlType="submit"
-            data-testid="product-save-button"
-            className="bg-blue-600 hover:bg-blue-700 border border-blue-600 text-white"
-          >
-            Save
-          </Button>
-        </Form.Item>
+        {isMobile && (
+          <Form.Item className="col-span-2 flex justify-end gap-4 mt-4">
+            <Button onClick={onCancel} className="mr-4">
+              Cancel
+            </Button>
+            <Button
+              type="primary"
+              htmlType="submit"
+              data-testid="product-save-button"
+              className="bg-blue-600 hover:bg-blue-700 border border-blue-600 text-white"
+            >
+              Save
+            </Button>
+          </Form.Item>
+        )}
       </Form>
     </div>
   );

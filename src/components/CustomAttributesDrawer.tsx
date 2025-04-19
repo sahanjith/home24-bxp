@@ -1,4 +1,4 @@
-import { Drawer, Form, Input, Select } from 'antd';
+import { Drawer, Form, Input, Select, Button } from 'antd';
 
 import DynamicValueInput from '@/components/DynamicValueInput';
 
@@ -18,6 +18,11 @@ const CustomAttributesDrawer: React.FC<Props> = ({ open, onClose }) => {
       onClose={onClose}
       destroyOnClose={false}
       forceRender
+      footer={
+        <div className="flex justify-end p-4 border-t">
+          <Button onClick={onClose}>Done</Button>
+        </div>
+      }
     >
       <div className="p-4">
         <Form.List name="attributes">
@@ -90,16 +95,6 @@ const CustomAttributesDrawer: React.FC<Props> = ({ open, onClose }) => {
             </>
           )}
         </Form.List>
-
-        <div className="mt-6 flex justify-end">
-          <button
-            type="button"
-            onClick={onClose}
-            className="bg-gray-300 hover:bg-gray-400 text-black px-4 py-2 rounded"
-          >
-            Done
-          </button>
-        </div>
       </div>
     </Drawer>
   );
