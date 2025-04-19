@@ -1,7 +1,9 @@
-import { Input, Switch, Select, Form, App } from 'antd';
-import { useEffect } from 'react';
+import { Input, Switch, Select, Form, App, FormInstance, Button } from 'antd';
+import { useEffect, useState } from 'react';
 
+import CustomAttributesDrawer from '@/components/CustomAttributesDrawer';
 import DynamicValueInput from '@/components/DynamicValueInput';
+import { useIsMobile } from '@/hooks/useIsMobile';
 import { useProductStore } from '@/stores/productStore';
 import { Product, ProductAttribute } from '@/types';
 import { handleError } from '@/utils/handleError';
@@ -9,13 +11,21 @@ import { handleError } from '@/utils/handleError';
 const { TextArea } = Input;
 
 interface ProductFormProps {
+  form: FormInstance;
   product: Product;
   onCancel?: () => void;
+  inlineAttributes?: boolean;
 }
 
-const ProductForm: React.FC<ProductFormProps> = ({ product, onCancel }) => {
-  const [form] = Form.useForm();
+const ProductForm: React.FC<ProductFormProps> = ({
+  form,
+  product,
+  onCancel,
+  inlineAttributes = false,
+}) => {
+  const isMobile = useIsMobile();
   const { message } = App.useApp();
+  const [customOpen, setCustomOpen] = useState(false);
 
   const updateProductInStore = useProductStore((state) => state.updateProduct);
   const setDrawerVisible = useProductStore((state) => state.setDrawerVisible);
@@ -80,7 +90,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onCancel }) => {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-6 text-gray-800">Product Details</h1>
+      {isMobile && <h1 className="text-2xl font-bold mb-6 text-gray-800">Product Details</h1>}
       <Form
         data-testid="product-form"
         form={form}
@@ -159,92 +169,102 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onCancel }) => {
           </Form.Item>
         )}
 
-        <Form.List name="attributes">
-          {(fields, { add, remove }) => (
-            <div className="col-span-2 space-y-4">
-              <label className="block text-sm font-medium text-gray-700">Custom Attributes</label>
-              {fields.map(({ key, name, ...restField }) => (
-                <div
-                  key={key}
-                  className="grid grid-cols-1 sm:grid-cols-4 gap-4 items-center border p-4 rounded"
-                >
-                  <Form.Item
-                    {...restField}
-                    name={[name, 'attributeName']}
-                    rules={[{ required: true, message: 'Enter attribute name' }]}
-                  >
-                    <Input placeholder="Attribute Name" />
-                  </Form.Item>
-                  <Form.Item
-                    {...restField}
-                    name={[name, 'attributeType']}
-                    rules={[{ required: true, message: 'Select attribute type' }]}
-                  >
-                    <Select placeholder="Type">
-                      <Select.Option value="text">Text</Select.Option>
-                      <Select.Option value="number">Number</Select.Option>
-                      <Select.Option value="url">URL</Select.Option>
-                      <Select.Option value="tags">Tags</Select.Option>
-                      <Select.Option value="boolean">Boolean</Select.Option>
-                    </Select>
-                  </Form.Item>
-                  <Form.Item
-                    shouldUpdate={(prev, curr) =>
-                      prev.attributes?.[name]?.attributeType !==
-                      curr.attributes?.[name]?.attributeType
-                    }
-                  >
-                    {() => {
-                      const type = form.getFieldValue(['attributes', name, 'attributeType']);
-                      return (
-                        <Form.Item
-                          {...restField}
-                          name={[name, 'attributeValue']}
-                          rules={[{ required: true, message: 'Enter value' }]}
-                        >
-                          {type ? <DynamicValueInput name={name} /> : null}
-                        </Form.Item>
-                      );
-                    }}
-                  </Form.Item>
-                  <button
-                    type="button"
-                    onClick={() => remove(name)}
-                    className="text-red-500 font-semibold"
-                  >
-                    Delete
-                  </button>
-                </div>
-              ))}
-              <Form.Item>
-                <button
-                  type="button"
-                  onClick={() => add()}
-                  className="bg-green-500 hover:bg-green-600 text-white font-semibold py-1 px-3 rounded"
-                >
-                  Add Attribute
-                </button>
-              </Form.Item>
-            </div>
-          )}
-        </Form.List>
+        {!inlineAttributes && (
+          <>
+            <Form.Item className="col-span-2">
+              <button
+                type="button"
+                onClick={() => setCustomOpen(true)}
+                className="bg-indigo-500 hover:bg-indigo-600 text-white py-2 px-4 rounded"
+              >
+                Edit Custom Attributes
+              </button>
+            </Form.Item>
+            <CustomAttributesDrawer open={customOpen} onClose={() => setCustomOpen(false)} />
+          </>
+        )}
 
-        <div className="col-span-2 flex justify-end gap-4 mt-4">
-          <button
-            type="button"
-            onClick={onCancel || (() => window.history.back())}
-            className="bg-gray-300 hover:bg-gray-400 text-black font-semibold py-2 px-4 rounded"
-          >
-            Cancel
-          </button>
-          <button
-            type="submit"
-            data-testid="product-save-button"
-            className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded"
-          >
+        {inlineAttributes && (
+          <div className="col-span-2">
+            <Form.List name="attributes">
+              {(fields, { add, remove }) => (
+                <>
+                  {fields.map(({ key, name, ...restField }) => (
+                    <div
+                      key={key}
+                      className="mb-4 border p-4 rounded grid grid-cols-1 sm:grid-cols-3 gap-2"
+                    >
+                      <Form.Item
+                        {...restField}
+                        name={[name, 'attributeName']}
+                        label="Name"
+                        rules={[{ required: true }]}
+                      >
+                        <Input />
+                      </Form.Item>
+                      <Form.Item
+                        {...restField}
+                        name={[name, 'attributeType']}
+                        label="Type"
+                        rules={[{ required: true }]}
+                      >
+                        <Select>
+                          <Select.Option value="text">Text</Select.Option>
+                          <Select.Option value="number">Number</Select.Option>
+                          <Select.Option value="url">URL</Select.Option>
+                          <Select.Option value="tags">Tags</Select.Option>
+                          <Select.Option value="boolean">Boolean</Select.Option>
+                        </Select>
+                      </Form.Item>
+                      <Form.Item shouldUpdate noStyle>
+                        {() => {
+                          const type = form.getFieldValue(['attributes', name, 'attributeType']);
+                          return (
+                            <Form.Item
+                              {...restField}
+                              name={[name, 'attributeValue']}
+                              label="Value"
+                              rules={[{ required: true }]}
+                            >
+                              {type ? (
+                                <DynamicValueInput name={name} />
+                              ) : (
+                                <Input disabled placeholder="Select type first" />
+                              )}
+                            </Form.Item>
+                          );
+                        }}
+                      </Form.Item>
+                      <button
+                        type="button"
+                        onClick={() => remove(name)}
+                        className="col-span-3 text-red-600"
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  ))}
+                  <Form.Item>
+                    <button
+                      type="button"
+                      onClick={() => add()}
+                      className="bg-green-500 text-white px-3 py-1 rounded"
+                    >
+                      + Add Attribute
+                    </button>
+                  </Form.Item>
+                </>
+              )}
+            </Form.List>
+          </div>
+        )}
+
+        <Form.Item className="col-span-2 flex justify-end gap-4 mt-4">
+          <Button onClick={onCancel}>Cancel</Button>
+          <Button type="primary" htmlType="submit" data-testid="product-save-button">
             Save
-          </button>
-        </div>
+          </Button>
+        </Form.Item>
       </Form>
     </div>
   );

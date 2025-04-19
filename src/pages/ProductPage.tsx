@@ -1,3 +1,4 @@
+import { Form } from 'antd';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
@@ -6,6 +7,7 @@ import { Product } from '@/types';
 import { handleError } from '@/utils/handleError';
 
 const ProductPage = () => {
+  const [form] = Form.useForm();
   const { id } = useParams<{ id: string }>();
   const [product, setProduct] = useState<Product | null>(null);
 
@@ -26,7 +28,14 @@ const ProductPage = () => {
 
   if (!product) return <div className="p-8">Loading...</div>;
 
-  return <ProductForm product={product} onCancel={() => window.history.back()} />;
+  return (
+    <ProductForm
+      form={form}
+      product={product}
+      onCancel={() => window.history.back()}
+      inlineAttributes
+    />
+  );
 };
 
 export default ProductPage;
