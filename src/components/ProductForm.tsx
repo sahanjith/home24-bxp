@@ -6,6 +6,15 @@ import DynamicValueInput from '@/components/DynamicValueInput';
 import { useIsMobile } from '@/hooks/useIsMobile';
 import { useProductStore } from '@/stores/productStore';
 import { Product, ProductAttribute } from '@/types';
+type FormValues = {
+  name: string;
+  sku: number;
+  url: string;
+  description: string;
+  available: boolean;
+  colors: string[];
+  attributes?: ProductAttribute[];
+};
 import { handleError } from '@/utils/handleError';
 
 const { TextArea } = Input;
@@ -15,6 +24,7 @@ interface ProductFormProps {
   product: Product;
   onCancel?: () => void;
   inlineAttributes?: boolean;
+  onValuesChange?: (changed: Partial<FormValues>, all: FormValues) => void;
 }
 
 const ProductForm: React.FC<ProductFormProps> = ({
@@ -22,6 +32,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
   product,
   onCancel,
   inlineAttributes = false,
+  onValuesChange,
 }) => {
   const isMobile = useIsMobile();
   const { message } = App.useApp();
@@ -96,6 +107,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
         form={form}
         layout="vertical"
         onFinish={handleFinish}
+        onValuesChange={onValuesChange}
         className="grid grid-cols-1 sm:grid-cols-2 gap-4"
       >
         <div className="space-y-4">
@@ -186,7 +198,10 @@ const ProductForm: React.FC<ProductFormProps> = ({
                 form.setFieldsValue({ attributes: product.attributes || [] });
                 setCustomOpen(false);
               }}
-              onDone={() => setCustomOpen(false)}
+              onDone={() => {
+                onValuesChange?.({} as Partial<FormValues>, form.getFieldsValue() as FormValues);
+                setCustomOpen(false);
+              }}
             />
           </>
         )}

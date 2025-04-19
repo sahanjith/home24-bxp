@@ -21,7 +21,7 @@ const CustomAttributesDrawer: React.FC<Props> = ({ open, onClose, onDone }) => {
       forceRender
       footer={
         <div className="flex justify-end p-4 border-t">
-          <Button onClick={onDone}>Done</Button>
+          <Button onClick={onDone}>Apply Attributes</Button>
         </div>
       }
     >
